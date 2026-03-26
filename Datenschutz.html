@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datenschutzerklärung – FriendsLoop</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0F0E1A;
+    --bg2: #14122A;
+    --primary-start: #FF6B6B;
+    --primary-end: #FF8E53;
+    --secondary-start: #4D96FF;
+    --secondary-end: #C77DFF;
+    --success: #56C596;
+    --yellow: #FFD93D;
+    --text: #FFFFFF;
+    --muted: #9B8EC4;
+    --card-bg: #1C1A30;
+    --card-border: rgba(155,142,196,0.15);
+    --radius: 18px;
+    --radius-sm: 12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.7;
+  }
+
+  /* ── BACKGROUND ── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(255,107,107,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 10%, rgba(199,125,255,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 80% 80%, rgba(77,150,255,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 20% 85%, rgba(86,197,150,0.05) 0%, transparent 55%);
+    pointer-events: none; z-index: 0;
+    animation: mesh-shift 18s ease-in-out infinite alternate;
+  }
+  @keyframes mesh-shift {
+    0%   { opacity: 1; transform: scale(1); }
+    100% { opacity: 0.75; transform: scale(1.04); }
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(155,142,196,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(155,142,196,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(var(--primary-start), var(--primary-end)); border-radius: 3px; }
+
+  h1, h2, h3 { font-family: 'Fredoka', sans-serif; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 24px;
+    background: rgba(15,14,26,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(155,142,196,0.08);
+  }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.02em; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-icon { width: 36px; height: 36px; border-radius: 9px; object-fit: cover; flex-shrink: 0; }
+  .logo-text { display: inline-flex; align-items: center; gap: 0; }
+  .logo-friends { background: linear-gradient(135deg, var(--primary-start), var(--primary-end)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 10px rgba(255,107,107,0.4)); }
+  .logo-loop { color: #ffffff; }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: 7px;
+    color: var(--muted); font-weight: 700; font-size: 0.88rem;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-back:hover { color: #fff; }
+  .nav-back svg { width: 16px; height: 16px; }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    position: relative; z-index: 1;
+    padding: 130px 24px 60px;
+    text-align: center;
+  }
+  .page-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(77,150,255,0.12); border: 1px solid rgba(77,150,255,0.25);
+    color: #4D96FF; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 20px;
+  }
+  .page-header h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 12px; }
+  .page-header p { color: var(--muted); font-size: 0.95rem; }
+
+  /* ── CONTENT ── */
+  .content {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+  .section-card:hover { border-color: rgba(155,142,196,0.28); }
+
+  .section-card-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .section-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .section-card h2 { font-size: 1.25rem; font-weight: 600; }
+
+  /* icon accent colors */
+  .ic-red    { background: linear-gradient(135deg, rgba(255,107,107,0.18), rgba(255,142,83,0.1)); }
+  .ic-purple { background: linear-gradient(135deg, rgba(199,125,255,0.18), rgba(77,150,255,0.1)); }
+  .ic-blue   { background: linear-gradient(135deg, rgba(77,150,255,0.18), rgba(77,150,255,0.08)); }
+  .ic-green  { background: linear-gradient(135deg, rgba(86,197,150,0.18), rgba(86,197,150,0.08)); }
+  .ic-yellow { background: linear-gradient(135deg, rgba(255,217,61,0.18), rgba(255,217,61,0.08)); }
+  .ic-orange { background: linear-gradient(135deg, rgba(255,142,83,0.18), rgba(255,107,107,0.08)); }
+
+  /* ── DATA ITEM ── */
+  .data-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(155,142,196,0.08);
+  }
+  .data-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .data-item:first-child { padding-top: 0; }
+
+  .data-num {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fredoka', sans-serif; font-size: 0.85rem; font-weight: 700;
+    margin-top: 1px;
+  }
+  .data-num.blue { background: linear-gradient(135deg, var(--secondary-start), var(--secondary-end)); }
+  .data-num.green { background: linear-gradient(135deg, var(--success), #43e8a3); }
+
+  .data-body strong { display: block; font-weight: 700; font-size: 0.98rem; margin-bottom: 4px; color: #fff; }
+  .data-body p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── TAG ROW ── */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.78rem; font-weight: 700; color: var(--muted);
+    padding: 5px 12px; border-radius: 100px;
+  }
+  .tag .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── CHECK LIST ── */
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .check-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 0.9rem; color: var(--muted); line-height: 1.55;
+  }
+  .check-list li .check-icon {
+    width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+  }
+  .check-icon.yes { background: rgba(86,197,150,0.18); color: var(--success); }
+  .check-icon.no  { background: rgba(255,107,107,0.12); color: #FF6B6B; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(86,197,150,0.08), rgba(77,150,255,0.05));
+    border: 1px solid rgba(86,197,150,0.2);
+    border-radius: var(--radius-sm);
+    padding: 18px 22px;
+    margin-top: 16px;
+    font-size: 0.88rem; color: var(--muted); line-height: 1.65;
+  }
+  .highlight-box strong { color: var(--success); }
+
+  .warning-box {
+    background: linear-gradient(135deg, rgba(255,217,61,0.07), rgba(255,142,83,0.05));
+    border: 1px solid rgba(255,217,61,0.2);
+    border-radius: var(--radius-sm);
+    padding: 18px 22px;
+    margin-top: 16px;
+    font-size: 0.88rem; color: var(--muted); line-height: 1.65;
+  }
+  .warning-box strong { color: var(--yellow); }
+
+  /* ── PROVIDER GRID ── */
+  .provider-list { display: flex; flex-direction: column; gap: 0; }
+  .provider-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(155,142,196,0.08);
+  }
+  .provider-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .provider-item:first-child { padding-top: 0; }
+  .provider-emoji { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .provider-body strong { display: block; font-weight: 700; font-size: 0.95rem; margin-bottom: 3px; color: #fff; }
+  .provider-body p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    background: var(--bg2);
+    border-top: 1px solid var(--card-border);
+    padding: 40px 24px 28px;
+    text-align: center;
+  }
+  .footer-logo { font-family: 'Fredoka', sans-serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+  .footer-logo .logo-friends { background: linear-gradient(135deg, var(--primary-start), var(--primary-end)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 12px rgba(255,107,107,0.45)); }
+  .footer-logo .logo-loop { color: #ffffff; }
+  .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 16px 0; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
+  .footer-links a:hover { color: #fff; }
+  .footer-copy { color: rgba(155,142,196,0.45); font-size: 0.78rem; margin-top: 16px; }
+  .footer-heart { color: var(--primary-start); animation: beat 1.2s ease-in-out infinite; display: inline-block; }
+  @keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .section-card { padding: 24px 20px; }
+    .page-header { padding-top: 110px; }
+  }
+
+  /* ── FADE IN ── */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+  .fade-in.d1 { transition-delay: 0.05s; }
+  .fade-in.d2 { transition-delay: 0.1s; }
+  .fade-in.d3 { transition-delay: 0.15s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="friendsloop.html" class="nav-logo">
+      <img src="icon.png" alt="FriendsLoop Icon" class="nav-icon">
+      <span class="logo-text"><span class="logo-friends">Friends</span><span class="logo-loop">Loop</span></span>
+    </a>
+    <a href="friendsloop.html" class="nav-back">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      Zurück
+    </a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="page-badge">🔒 Datenschutz</div>
+  <h1>Datenschutzerklärung</h1>
+  <p>Zuletzt aktualisiert: Juni 2025 · FriendsLoop App</p>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- Erhobene Daten -->
+  <div class="section-card fade-in">
+    <div class="section-card-header">
+      <div class="section-icon ic-red">📋</div>
+      <h2>Welche Daten werden erhoben?</h2>
+    </div>
+
+    <div class="data-item">
+      <div class="data-num">1</div>
+      <div class="data-body">
+        <strong>Spielername &amp; Avatar</strong>
+        <p>Wird ausschließlich lokal auf deinem Gerät gespeichert (SharedPreferences). Kein Account, keine E-Mail, kein Passwort erforderlich.</p>
+      </div>
+    </div>
+    <div class="data-item">
+      <div class="data-num">2</div>
+      <div class="data-body">
+        <strong>Raum-Daten</strong>
+        <p>Raumcode, Spielername, Avatar, Spielstatus sowie Stimmen und Antworten werden temporär in der Firebase Realtime Database gespeichert und nach Spielende automatisch gelöscht.</p>
+      </div>
+    </div>
+    <div class="data-item">
+      <div class="data-num">3</div>
+      <div class="data-body">
+        <strong>Zeichnungsdaten</strong>
+        <p>Beim Spiel „Zeichne &amp; Rate" werden Strichkoordinaten temporär über Firebase übertragen, um die Zeichnung in Echtzeit auf allen Geräten darzustellen.</p>
+      </div>
+    </div>
+    <div class="data-item">
+      <div class="data-num green">✓</div>
+      <div class="data-body">
+        <strong>Keine personenbezogenen Daten</strong>
+        <p>Es werden kein echter Name, keine E-Mail-Adresse, keine Telefonnummer und kein Geburtsdatum erhoben oder gespeichert.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Datenspeicherung -->
+  <div class="section-card fade-in d1">
+    <div class="section-card-header">
+      <div class="section-icon ic-green">🗄️</div>
+      <h2>Datenspeicherung</h2>
+    </div>
+
+    <div class="tag-row" style="margin-top:0; margin-bottom: 18px;">
+      <span class="tag"><span class="dot" style="background:#56C596"></span> Lokal auf dem Gerät</span>
+      <span class="tag"><span class="dot" style="background:#4D96FF"></span> Temporär in Firebase</span>
+      <span class="tag"><span class="dot" style="background:#FF6B6B"></span> Keine dauerhafte Serverspeicherung</span>
+    </div>
+
+    <ul class="check-list">
+      <li>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Spielername &amp; Avatar</strong> — lokal auf dem Gerät gespeichert, bis die App deinstalliert wird.</span>
+      </li>
+      <li>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Spieldaten</strong> (Räume, Stimmen, Zeichnungen) — temporär in Firebase, werden nach Spielende oder bei Inaktivität automatisch gelöscht.</span>
+      </li>
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Keine dauerhafte Speicherung von Spieldaten auf Servern.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Drittanbieter -->
+  <div class="section-card fade-in d2">
+    <div class="section-card-header">
+      <div class="section-icon ic-blue">🔌</div>
+      <h2>Drittanbieter-Dienste</h2>
+    </div>
+
+    <div class="provider-list">
+      <div class="provider-item">
+        <span class="provider-emoji">🔥</span>
+        <div class="provider-body">
+          <strong>Google Firebase Realtime Database</strong>
+          <p>Speicherung temporärer Spieldaten (Räume, Stimmen, Zeichnungen). Server befinden sich in der EU/USA. Anbieter: Google LLC.</p>
+        </div>
+      </div>
+      <div class="provider-item">
+        <span class="provider-emoji">🛡️</span>
+        <div class="provider-body">
+          <strong>Google Firebase App Check</strong>
+          <p>Schutz der Backend-Dienste vor Missbrauch und unbefugtem Zugriff.</p>
+        </div>
+      </div>
+      <div class="provider-item">
+        <span class="provider-emoji">📢</span>
+        <div class="provider-body">
+          <strong>Google AdMob (Mobile Ads)</strong>
+          <p>Anzeige von Werbung in der App. AdMob kann die Werbe-ID des Geräts (GAID auf Android, IDFA auf iOS) sowie Geräteinformationen zur Ausspielung von Werbung erfassen.</p>
+        </div>
+      </div>
+      <div class="provider-item">
+        <span class="provider-emoji">🛒</span>
+        <div class="provider-body">
+          <strong>Google Play Billing (In-App-Käufe)</strong>
+          <p>Abwicklung von In-App-Käufen über Google. Wir erhalten keine Zahlungsdaten — die gesamte Zahlungsabwicklung erfolgt direkt durch Google.</p>
+        </div>
+      </div>
+      <div class="provider-item">
+        <span class="provider-emoji">🍎</span>
+        <div class="provider-body">
+          <strong>Apple StoreKit (In-App-Käufe)</strong>
+          <p>Abwicklung von In-App-Käufen über Apple. Wir erhalten keine Zahlungsdaten — die gesamte Zahlungsabwicklung erfolgt direkt durch Apple.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Werbe-ID / Tracking -->
+  <div class="section-card fade-in d1">
+    <div class="section-card-header">
+      <div class="section-icon ic-yellow">📣</div>
+      <h2>Werbe-ID &amp; Tracking</h2>
+    </div>
+
+    <ul class="check-list">
+      <li>
+        <span class="check-icon yes">ℹ</span>
+        <span>Google AdMob kann die <strong style="color:#fff">Werbe-ID des Geräts</strong> (GAID / IDFA) verwenden, um personalisierte oder nicht-personalisierte Werbung anzuzeigen.</span>
+      </li>
+      <li>
+        <span class="check-icon yes">✓</span>
+        <span>Nutzer können <strong style="color:#fff">personalisierte Werbung deaktivieren</strong> — unter Android in den Google-Einstellungen, unter iOS über die App-Tracking-Transparenz.</span>
+      </li>
+    </ul>
+
+    <div class="warning-box">
+      <strong>Hinweis:</strong> Die Datenschutzerklärung von Google AdMob findest du unter <a href="https://policies.google.com/privacy" target="_blank" style="color: var(--yellow); text-decoration: none;">policies.google.com/privacy</a>.
+    </div>
+  </div>
+
+  <!-- Kein Account -->
+  <div class="section-card fade-in d2">
+    <div class="section-card-header">
+      <div class="section-icon ic-green">🚫</div>
+      <h2>Keine Registrierung / kein Account</h2>
+    </div>
+
+    <ul class="check-list">
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Die App erfordert <strong style="color:#fff">keinen Account</strong> und keine Registrierung.</span>
+      </li>
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Es werden <strong style="color:#fff">keine Anmeldedaten</strong> (Benutzername, E-Mail, Passwort) erhoben oder gespeichert.</span>
+      </li>
+    </ul>
+
+    <div class="highlight-box">
+      <strong>Einfach spielen:</strong> Gib einen Spielernamen ein und leg direkt los — mehr braucht es nicht.
+    </div>
+  </div>
+
+  <!-- Kinder -->
+  <div class="section-card fade-in d1">
+    <div class="section-card-header">
+      <div class="section-icon ic-purple">👶</div>
+      <h2>Kinder (COPPA / DSGVO-K)</h2>
+    </div>
+
+    <ul class="check-list">
+      <li>
+        <span class="check-icon yes">ℹ</span>
+        <span>Die App richtet sich an Nutzer <strong style="color:#fff">ab 14 Jahren</strong>.</span>
+      </li>
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Es werden <strong style="color:#fff">keine personenbezogenen Daten von Kindern</strong> unter 14 Jahren wissentlich erhoben.</span>
+      </li>
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Sollten uns Hinweise darauf vorliegen, dass Kinder unter 14 Jahren die App nutzen, werden entsprechende Daten umgehend gelöscht.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Berechtigungen -->
+  <div class="section-card fade-in d2">
+    <div class="section-card-header">
+      <div class="section-icon ic-orange">📱</div>
+      <h2>App-Berechtigungen</h2>
+    </div>
+
+    <ul class="check-list">
+      <li>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Internetzugang</strong> — erforderlich für Online-Spiele, Echtzeit-Synchronisation und Werbung.</span>
+      </li>
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Kein Zugriff auf <strong style="color:#fff">Kamera</strong>.</span>
+      </li>
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Kein Zugriff auf <strong style="color:#fff">Mikrofon</strong>.</span>
+      </li>
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Kein Zugriff auf <strong style="color:#fff">Standort</strong>.</span>
+      </li>
+      <li>
+        <span class="check-icon no">✗</span>
+        <span>Kein Zugriff auf <strong style="color:#fff">Kontakte</strong>.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Kontakt -->
+  <div class="section-card fade-in d1">
+    <div class="section-card-header">
+      <div class="section-icon ic-blue">✉️</div>
+      <h2>Kontakt &amp; Verantwortlicher</h2>
+    </div>
+    <p style="color: var(--muted); font-size: 0.92rem; line-height: 1.9;">
+      Verantwortlich im Sinne der DSGVO:<br>
+      <strong style="color:#fff">Faruk Türkaslan</strong><br>
+      c/o Postflex #8786<br>
+      Emsdettener Str. 10<br>
+      48268 Greven<br><br>
+      <a href="mailto:development.faruk@gmail.com" style="color: #4D96FF; text-decoration: none; font-weight: 700;">development.faruk@gmail.com</a>
+    </p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span class="logo-friends">Friends</span><span class="logo-loop">Loop</span></div>
+  <div class="footer-links">
+    <a href="friendsloop.html">Startseite</a>
+    <a href="datenschutz.html">Datenschutz</a>
+  </div>
+  <p class="footer-copy">FriendsLoop — Made with <span class="footer-heart">❤️</span> · © 2025 FriendsLoop. Alle Rechte vorbehalten.</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Particles
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.45;';
+  document.body.prepend(canvas);
+  const ctx = canvas.getContext('2d');
+  const colors = ['#FF6B6B','#FF8E53','#4D96FF','#C77DFF','#56C596','#FFD93D'];
+  let W, H, particles;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function init() {
+    resize();
+    particles = Array.from({length: 40}, () => ({
+      x: Math.random()*W, y: Math.random()*H, r: Math.random()*2+0.5,
+      dx: (Math.random()-0.5)*0.3, dy: (Math.random()-0.5)*0.3,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      alpha: Math.random()*0.35+0.08
+    }));
+  }
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.fill();
+      p.x+=p.dx; p.y+=p.dy;
+      if(p.x<0||p.x>W) p.dx*=-1;
+      if(p.y<0||p.y>H) p.dy*=-1;
+    });
+    ctx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', resize);
+  init(); draw();
+</script>
+</body>
+</html>
