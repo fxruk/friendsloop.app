@@ -1,845 +1,536 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FriendsLoop – Spiele mit deinen Freunden</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter','sans-serif'] },
+        colors: { primary:'#7C3AED', secondary:'#EC4899', accent:'#F59E0B' },
+        animation: { 'float':'float 6s ease-in-out infinite', 'pulse-slow':'pulse 4s cubic-bezier(0.4,0,0.6,1) infinite' },
+        keyframes: { float:{ '0%,100%':{transform:'translateY(0)'}, '50%':{transform:'translateY(-20px)'} } }
+      }
+    }
+  }
+</script>
 <style>
-  :root {
-    --bg: #0F0E1A;
-    --bg2: #14122A;
-    --bg3: #1A1830;
-    --primary-start: #FF6B6B;
-    --primary-end: #FF8E53;
-    --secondary-start: #4D96FF;
-    --secondary-end: #C77DFF;
-    --success: #56C596;
-    --yellow: #FFD93D;
-    --text: #FFFFFF;
-    --muted: #9B8EC4;
-    --card-bg: #1C1A30;
-    --card-border: rgba(155,142,196,0.15);
-    --radius: 18px;
-    --radius-sm: 12px;
-  }
+  .gradient-text { background:linear-gradient(135deg,#7C3AED 0%,#EC4899 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .glass { background:rgba(255,255,255,0.85); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.3); }
+  .game-card { transition:all 0.3s ease; }
+  .game-card:hover { transform:translateY(-8px); box-shadow:0 20px 40px -15px rgba(124,58,237,0.3); }
+  .blob { position:absolute; filter:blur(80px); opacity:0.4; z-index:0; }
+  .soon-card { background:linear-gradient(135deg,rgba(124,58,237,0.04),rgba(236,72,153,0.04)); border:2px dashed rgba(124,58,237,0.2); border-radius:24px; }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
-
-  /* ── ANIMATED MESH BACKGROUND ── */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(255,107,107,0.07) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 90% 10%, rgba(199,125,255,0.07) 0%, transparent 55%),
-      radial-gradient(ellipse 70% 60% at 80% 80%, rgba(77,150,255,0.07) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 20% 85%, rgba(86,197,150,0.05) 0%, transparent 55%),
-      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(255,142,83,0.04) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-    animation: mesh-shift 18s ease-in-out infinite alternate;
-  }
-
-  @keyframes mesh-shift {
-    0%   { opacity: 1; transform: scale(1) translateY(0); }
-    50%  { opacity: 0.75; transform: scale(1.04) translateY(-12px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
-  }
-
-  /* ── GRID LINES ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(155,142,196,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(155,142,196,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: linear-gradient(var(--primary-start), var(--primary-end)); border-radius: 3px; }
-
-  /* ── TYPOGRAPHY ── */
-  h1, h2, h3 { font-family: 'Fredoka', sans-serif; letter-spacing: 0.01em; }
-
-  /* ── UTILITY ── */
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-  .grad-primary { background: linear-gradient(135deg, var(--primary-start), var(--primary-end)); }
-  .grad-secondary { background: linear-gradient(135deg, var(--secondary-start), var(--secondary-end)); }
-  .text-muted { color: var(--muted); }
-
-  /* ── FADE IN ANIMATION ── */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.65s ease, transform 0.65s ease;
-  }
-  .fade-in.visible { opacity: 1; transform: translateY(0); }
-  .fade-in.delay-1 { transition-delay: 0.1s; }
-  .fade-in.delay-2 { transition-delay: 0.2s; }
-  .fade-in.delay-3 { transition-delay: 0.3s; }
-  .fade-in.delay-4 { transition-delay: 0.4s; }
-  .fade-in.delay-5 { transition-delay: 0.5s; }
-  .fade-in.delay-6 { transition-delay: 0.6s; }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 16px 24px;
-    background: rgba(15,14,26,0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(155,142,196,0.08);
-  }
-  .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-  .nav-logo { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.02em; display: flex; align-items: center; gap: 10px; }
-  .nav-icon { width: 36px; height: 36px; border-radius: 9px; object-fit: cover; flex-shrink: 0; }
-  .logo-text { display: inline-flex; align-items: center; gap: 0; }
-  .nav-logo .logo-friends { background: linear-gradient(135deg, var(--primary-start), var(--primary-end)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 10px rgba(255,107,107,0.4)); }
-  .nav-logo .logo-loop { color: #ffffff; }
-  .nav-buttons { display: flex; align-items: center; gap: 8px; }
-  .nav-cta {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem;
-    padding: 8px 16px; border-radius: 100px; text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-    color: #fff;
-  }
-  .nav-cta-android {
-    background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-    box-shadow: 0 4px 16px rgba(255,107,107,0.3);
-  }
-  .nav-cta-android:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,107,0.5); }
-  .nav-cta-ios {
-    background: linear-gradient(135deg, var(--secondary-start), var(--secondary-end));
-    box-shadow: 0 4px 16px rgba(77,150,255,0.3);
-  }
-  .nav-cta-ios:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(77,150,255,0.5); }
-  @media (max-width: 480px) { .nav-cta span { display: none; } }
-
-  /* ── HERO ── */
-  .hero {
-    position: relative; min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    text-align: center; padding: 120px 24px 80px;
-    overflow: hidden;
-  }
-
-  .hero-glow {
-    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.18; pointer-events: none;
-  }
-  .hero-glow-1 { width: 600px; height: 600px; background: var(--primary-start); top: -100px; left: -150px; }
-  .hero-glow-2 { width: 500px; height: 500px; background: var(--secondary-end); bottom: -100px; right: -100px; }
-  .hero-glow-3 { width: 300px; height: 300px; background: var(--secondary-start); top: 50%; left: 50%; transform: translate(-50%,-50%); }
-
-  /* floating orbs */
-  .orb {
-    position: absolute; border-radius: 50%; opacity: 0.12; animation: float-orb 8s ease-in-out infinite; pointer-events: none;
-  }
-  .orb-1 { width: 80px; height: 80px; background: var(--yellow); top: 15%; left: 8%; animation-delay: 0s; }
-  .orb-2 { width: 50px; height: 50px; background: var(--success); top: 70%; left: 5%; animation-delay: 2s; }
-  .orb-3 { width: 65px; height: 65px; background: var(--primary-start); top: 20%; right: 8%; animation-delay: 1s; }
-  .orb-4 { width: 40px; height: 40px; background: var(--secondary-end); top: 65%; right: 6%; animation-delay: 3s; }
-
-  @keyframes float-orb {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-20px) scale(1.05); }
-  }
-
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(77,150,255,0.12); border: 1px solid rgba(77,150,255,0.3);
-    color: #4D96FF; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 6px 16px; border-radius: 100px; margin-bottom: 24px;
-  }
-  .hero-badge span { display: inline-block; width: 7px; height: 7px; background: #4D96FF; border-radius: 50%; animation: pulse-dot 1.5s ease-in-out infinite; }
-  @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.7); } }
-
-  .hero-title {
-    font-size: clamp(3.2rem, 8vw, 6rem);
-    font-weight: 700;
-    line-height: 1.08;
-    margin-bottom: 16px;
-  }
-  .title-friends {
-    background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 28px rgba(255,107,107,0.55));
-  }
-  .title-loop {
-    color: #ffffff;
-  }
-
-  .hero-tagline {
-    font-size: clamp(1.1rem, 2.5vw, 1.45rem);
-    color: var(--muted);
-    max-width: 560px;
-    margin: 0 auto 16px;
-    font-weight: 500;
-  }
-
-  .hero-pills {
-    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-    margin-bottom: 40px;
-  }
-  .pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    padding: 6px 16px; border-radius: 100px;
-    font-size: 0.88rem; font-weight: 600; color: var(--muted);
-  }
-  .pill .dot { width: 7px; height: 7px; border-radius: 50%; }
-
-  .hero-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
-
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-    color: #fff; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.05rem;
-    padding: 15px 32px; border-radius: 100px; text-decoration: none;
-    box-shadow: 0 6px 30px rgba(255,107,107,0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: none; cursor: pointer;
-  }
-  .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 40px rgba(255,107,107,0.55); }
-  .btn-primary:active { transform: translateY(0) scale(0.99); }
-
-  .btn-primary svg { width: 22px; height: 22px; flex-shrink: 0; }
-
-  .btn-appstore {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: linear-gradient(135deg, var(--secondary-start), var(--secondary-end));
-    color: #fff; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.05rem;
-    padding: 15px 32px; border-radius: 100px; text-decoration: none;
-    box-shadow: 0 6px 30px rgba(77,150,255,0.35);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: none; cursor: pointer;
-  }
-  .btn-appstore:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 40px rgba(77,150,255,0.5); }
-  .btn-appstore:active { transform: translateY(0) scale(0.99); }
-  .btn-appstore svg { width: 22px; height: 22px; flex-shrink: 0; }
-
-  .hero-scroll-hint {
-    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    color: var(--muted); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em;
-    opacity: 0.5;
-    animation: bounce-down 2.5s ease-in-out infinite;
-  }
-  @keyframes bounce-down { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
-  .hero-scroll-hint svg { width: 20px; height: 20px; }
-
-  /* ── SECTION COMMON ── */
-  section { position: relative; z-index: 1; }
-  .section-label {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 12px;
-  }
-  .section-label::before, .section-label::after {
-    content: ''; display: block; width: 24px; height: 1px; background: var(--card-border);
-  }
-  .section-title {
-    font-size: clamp(1.9rem, 4vw, 2.8rem);
-    font-weight: 700; line-height: 1.15;
-    margin-bottom: 12px;
-  }
-  .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 540px; margin: 0 auto; }
-
-  /* ── HOW IT WORKS ── */
-  .how { padding: 100px 0; background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); }
-  .how-header { text-align: center; margin-bottom: 64px; }
-
-  .steps-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;
-    position: relative;
-  }
-
-  /* connector line */
-  .steps-grid::before {
-    content: '';
-    position: absolute; top: 56px; left: calc(33.33% - 0px); right: calc(33.33% - 0px);
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary-start), var(--secondary-end));
-    opacity: 0.25;
-    display: none;
-  }
-  @media (min-width: 780px) { .steps-grid::before { display: block; } }
-
-  .step-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
-    padding: 32px 28px;
-    text-align: center;
-    position: relative;
-    transition: transform 0.3s, border-color 0.3s;
-  }
-  .step-card:hover { transform: translateY(-6px); border-color: rgba(255,107,107,0.3); }
-
-  .step-num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 56px; height: 56px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-    font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 700;
-    margin-bottom: 20px;
-    box-shadow: 0 6px 24px rgba(255,107,107,0.35);
-  }
-  .step-card:nth-child(2) .step-num {
-    background: linear-gradient(135deg, var(--secondary-start), var(--secondary-end));
-    box-shadow: 0 6px 24px rgba(77,150,255,0.35);
-  }
-  .step-card:nth-child(3) .step-num {
-    background: linear-gradient(135deg, var(--success), #43e8a3);
-    box-shadow: 0 6px 24px rgba(86,197,150,0.35);
-  }
-
-  .step-emoji { font-size: 2rem; margin-bottom: 10px; }
-  .step-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
-  .step-card p { font-size: 0.93rem; color: var(--muted); line-height: 1.55; }
-
-  /* ── GAMES ── */
-  .games { padding: 100px 0; }
-  .games-header { text-align: center; margin-bottom: 56px; }
-
-  .games-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 22px;
-  }
-
-  .game-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
-    padding: 28px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-    cursor: default;
-  }
-
-  .game-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    border-radius: var(--radius) var(--radius) 0 0;
-    background: var(--accent);
-  }
-
-  .game-card::after {
-    content: '';
-    position: absolute; top: -60px; right: -60px;
-    width: 180px; height: 180px; border-radius: 50%;
-    background: var(--accent);
-    opacity: 0.05;
-    transition: opacity 0.3s;
-  }
-
-  .game-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--accent);
-    box-shadow: 0 16px 48px rgba(0,0,0,0.35);
-  }
-  .game-card:hover::after { opacity: 0.1; }
-
-  .game-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-  .game-emoji { font-size: 2.4rem; line-height: 1; }
-  .game-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 100px; color: var(--muted); white-space: nowrap;
-    height: fit-content; margin-top: 4px;
-  }
-
-  .game-title {
-    font-size: 1.3rem; font-weight: 600; margin-bottom: 4px;
-    color: var(--accent);
-  }
-
-  .game-meta {
-    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
-    font-size: 0.8rem; color: var(--muted); font-weight: 600;
-  }
-  .game-meta span { display: flex; align-items: center; gap: 5px; }
-
-  .game-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.55; margin-bottom: 16px; }
-
-  .game-features {
-    display: flex; flex-wrap: wrap; gap: 7px;
-  }
-  .game-feature {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-    font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.5);
-    padding: 4px 10px; border-radius: 100px;
-  }
-
-  /* ── COMING SOON ── */
-  .coming-soon-row {
-    display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
-    margin-top: 36px;
-  }
-  .soon-card {
-    display: flex; align-items: center; gap: 10px;
-    background: rgba(255,255,255,0.03); border: 1px dashed rgba(155,142,196,0.2);
-    border-radius: var(--radius-sm); padding: 14px 22px;
-    color: var(--muted); font-weight: 600; font-size: 0.9rem;
-  }
-  .soon-card .soon-emoji { font-size: 1.4rem; }
-  .soon-badge {
-    font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
-    background: rgba(255,217,61,0.12); border: 1px solid rgba(255,217,61,0.25);
-    color: var(--yellow); padding: 3px 9px; border-radius: 100px;
-  }
-
-  /* ── FEATURES ── */
-  .features { padding: 100px 0; background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); }
-  .features-header { text-align: center; margin-bottom: 56px; }
-
-  .features-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px;
-  }
-
-  .feat-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
-    padding: 28px 24px;
-    transition: transform 0.3s, border-color 0.3s;
-  }
-  .feat-card:hover { transform: translateY(-5px); border-color: rgba(77,150,255,0.25); }
-
-  .feat-icon {
-    width: 48px; height: 48px; border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem; margin-bottom: 16px;
-  }
-  .feat-icon.g1 { background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,142,83,0.15)); }
-  .feat-icon.g2 { background: linear-gradient(135deg, rgba(77,150,255,0.15), rgba(199,125,255,0.15)); }
-  .feat-icon.g3 { background: linear-gradient(135deg, rgba(86,197,150,0.15), rgba(86,197,150,0.08)); }
-  .feat-icon.g4 { background: linear-gradient(135deg, rgba(255,217,61,0.15), rgba(255,217,61,0.08)); }
-
-  .feat-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
-  .feat-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
-
-  /* ── CTA BANNER ── */
-  .cta-banner {
-    padding: 80px 0;
-  }
-  .cta-inner {
-    background: linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(255,142,83,0.05) 50%, rgba(77,150,255,0.1) 100%);
-    border: 1px solid rgba(255,107,107,0.2);
-    border-radius: 24px;
-    padding: 64px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .cta-inner::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 30% 50%, rgba(255,107,107,0.08) 0%, transparent 70%),
-                radial-gradient(ellipse at 70% 50%, rgba(77,150,255,0.08) 0%, transparent 70%);
-  }
-  .cta-inner > * { position: relative; z-index: 1; }
-  .cta-inner h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 12px; }
-  .cta-inner p { color: var(--muted); margin-bottom: 32px; font-size: 1.05rem; }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--bg2);
-    border-top: 1px solid var(--card-border);
-    padding: 48px 24px 32px;
-    text-align: center;
-  }
-  .footer-logo { font-family: 'Fredoka', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
-  .footer-logo .logo-friends { background: linear-gradient(135deg, var(--primary-start), var(--primary-end)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 12px rgba(255,107,107,0.45)); }
-  .footer-logo .logo-loop { color: #ffffff; }
-  .footer-tagline { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
-  .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-bottom: 32px; }
-  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; font-weight: 600; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--text); }
-  .footer-divider { width: 60px; height: 1px; background: var(--card-border); margin: 24px auto; }
-  .footer-copy { color: rgba(155,142,196,0.5); font-size: 0.8rem; }
-  .footer-impressum {
-    color: var(--muted); font-size: 0.85rem; line-height: 1.8;
-    margin-bottom: 8px;
-  }
-  .footer-impressum strong { color: rgba(255,255,255,0.6); font-weight: 700; }
-  .footer-heart { color: var(--primary-start); animation: beat 1.2s ease-in-out infinite; display: inline-block; }
-  @keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
-
-  /* ── PLAY BADGE ── */
-  .play-badge {
-    display: inline-flex; align-items: center; gap: 12px;
-    background: #1a1a2e; border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 14px; padding: 10px 20px;
-    color: #fff; text-decoration: none;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    font-size: 0.88rem;
-  }
-  .play-badge:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.25); box-shadow: 0 8px 28px rgba(0,0,0,0.4); }
-  .play-badge-text { text-align: left; line-height: 1.2; }
-  .play-badge-text small { font-size: 0.68rem; color: rgba(255,255,255,0.5); display: block; text-transform: uppercase; letter-spacing: 0.05em; }
-  .play-badge-text strong { font-size: 1rem; font-weight: 700; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .nav-logo { font-size: 1.25rem; }
-    .hero-title { font-size: 2.8rem; }
-    .cta-inner { padding: 40px 24px; }
-    .games-grid { grid-template-columns: 1fr; }
-    .steps-grid { grid-template-columns: 1fr; }
-    .features-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 400px) {
-    .features-grid { grid-template-columns: 1fr; }
-  }
+  /* DATENSCHUTZ MODAL */
+  #ds-modal { display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto; }
+  #ds-modal.open { display:block; }
+  #ds-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); }
+  #ds-panel { position:relative; z-index:10000; max-width:820px; margin:40px auto; padding:0 16px 60px; }
+  .ds-card { background:#fff; border:1px solid #e2e8f0; border-radius:20px; padding:26px 30px; margin-bottom:12px; box-shadow:0 4px 20px rgba(0,0,0,0.06); }
+  .ds-head { display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid #f1f5f9; }
+  .ds-icon { width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:1.15rem; flex-shrink:0; }
+  .ds-card h2 { font-size:1.05rem; font-weight:700; color:#0f172a; }
+  .ds-item { display:flex; gap:12px; align-items:flex-start; padding:11px 0; border-bottom:1px solid #f8fafc; }
+  .ds-item:last-child { border-bottom:none; padding-bottom:0; }
+  .ds-item:first-child { padding-top:0; }
+  .ds-num { width:24px; height:24px; border-radius:7px; flex-shrink:0; background:linear-gradient(135deg,#7C3AED,#EC4899); display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:700; color:#fff; margin-top:1px; }
+  .ds-num.green { background:linear-gradient(135deg,#10b981,#34d399); }
+  .ds-body strong { display:block; font-weight:700; font-size:0.92rem; margin-bottom:2px; color:#0f172a; }
+  .ds-body p { font-size:0.83rem; color:#64748b; line-height:1.6; }
+  .ds-check { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .ds-check li { display:flex; align-items:flex-start; gap:11px; font-size:0.85rem; color:#64748b; line-height:1.55; }
+  .ds-ci { width:19px; height:19px; border-radius:6px; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:0.68rem; font-weight:700; }
+  .ds-ci.yes { background:#dcfce7; color:#16a34a; }
+  .ds-ci.no  { background:#fee2e2; color:#dc2626; }
+  .ds-ci.info{ background:#ede9fe; color:#7C3AED; }
+  .ds-provider { display:flex; align-items:flex-start; gap:12px; padding:11px 0; border-bottom:1px solid #f8fafc; }
+  .ds-provider:last-child { border-bottom:none; padding-bottom:0; }
+  .ds-provider:first-child { padding-top:0; }
+  .ds-provider .pe { font-size:1.25rem; flex-shrink:0; margin-top:2px; }
+  .ds-provider strong { display:block; font-weight:700; font-size:0.9rem; margin-bottom:2px; color:#0f172a; }
+  .ds-provider p { font-size:0.82rem; color:#64748b; line-height:1.55; }
+  .ds-box { border-radius:11px; padding:13px 16px; margin-top:12px; font-size:0.83rem; line-height:1.65; }
+  .ds-box.green { background:#f0fdf4; border:1px solid #bbf7d0; color:#166534; }
+  .ds-box.yellow { background:#fffbeb; border:1px solid #fde68a; color:#92400e; }
 </style>
 </head>
-<body>
+<body class="font-sans text-slate-800 bg-slate-50 overflow-x-hidden">
 
 <!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <span class="nav-logo"><img src="icon.png" alt="FriendsLoop Icon" class="nav-icon"><span class="logo-text"><span class="logo-friends">Friends</span><span class="logo-loop">Loop</span></span></span>
-    <div class="nav-buttons">
-      <a href="#" class="nav-cta nav-cta-android">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
-        Play Store
-      </a>
-      <a href="#" class="nav-cta nav-cta-ios">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        App Store
-      </a>
+<nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <div class="flex items-center gap-3">
+        <img src="icon.png" alt="FriendsLoop" class="w-10 h-10 rounded-xl object-cover shadow-md">
+        <span class="font-bold text-2xl tracking-tight text-slate-900">FriendsLoop</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#" class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white rounded-full font-semibold text-sm hover:bg-slate-800 transition-all hover:scale-105 shadow-lg">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
+          Play Store
+        </a>
+        <a href="#" class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-white text-slate-900 border border-slate-200 rounded-full font-semibold text-sm hover:bg-slate-50 transition-all hover:scale-105 shadow-md">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          App Store
+        </a>
+      </div>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-glow hero-glow-1"></div>
-  <div class="hero-glow hero-glow-2"></div>
-  <div class="hero-glow hero-glow-3"></div>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="orb orb-4"></div>
+<section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+  <div class="blob w-96 h-96 bg-purple-500 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+  <div class="blob w-96 h-96 bg-pink-500 rounded-full bottom-0 right-0 translate-x-1/2 translate-y-1/2"></div>
+  <div class="blob w-64 h-64 bg-amber-400 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20"></div>
 
-  <div class="container" style="position:relative;z-index:1;">
-    <div class="fade-in">
-      <div class="hero-badge">
-        <span></span>
-        Kostenlos &amp; kein Account nötig
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="text-center lg:text-left space-y-8">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-purple-200 shadow-sm animate-pulse-slow">
+          <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
+          <span class="text-sm font-semibold text-primary">Kostenlos & kein Account nötig</span>
+        </div>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+          Spiele mit deinen <span class="gradient-text">Freunden</span> — jeder auf dem eigenen Handy.
+        </h1>
+        <p class="text-xl text-slate-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+          Sofort losspielen ohne Registrierung. Erstelle einen Raum, teile den Code und los geht's!
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start flex-wrap">
+          <div class="flex items-center gap-3 text-slate-700 font-medium bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200">
+            <i data-lucide="check-circle" class="w-5 h-5 text-primary"></i><span>Kein Account nötig</span>
+          </div>
+          <div class="flex items-center gap-3 text-slate-700 font-medium bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200">
+            <i data-lucide="share-2" class="w-5 h-5 text-secondary"></i><span>Raumcode teilen</span>
+          </div>
+          <div class="flex items-center gap-3 text-slate-700 font-medium bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200">
+            <i data-lucide="zap" class="w-5 h-5 text-accent"></i><span>Sofort losspielen</span>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4 pt-2 justify-center lg:justify-start">
+          <a href="#" class="flex items-center justify-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-slate-900/20 group">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
+            <div class="text-left"><div class="text-xs font-normal opacity-70">Jetzt herunterladen</div><div>Play Store</div></div>
+          </a>
+          <a href="#" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all hover:scale-105 active:scale-95 shadow-xl border border-slate-200 group">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <div class="text-left"><div class="text-xs font-normal opacity-50">Download on the</div><div>App Store</div></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="relative z-10 animate-float">
+          <div class="bg-white rounded-3xl shadow-2xl p-4 max-w-sm mx-auto border border-slate-100 rotate-3 hover:rotate-0 transition-transform duration-500">
+            <div class="bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl p-6 aspect-[9/16] flex flex-col justify-between relative overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-secondary/5"></div>
+              <div class="relative z-10 space-y-4">
+                <div class="flex justify-between items-center">
+                  <img src="icon.png" class="w-8 h-8 rounded-lg object-cover">
+                  <div class="text-xs font-bold text-slate-400">FriendsLoop</div>
+                </div>
+                <div class="space-y-2">
+                  <div class="h-2 bg-slate-300 rounded w-3/4"></div>
+                  <div class="h-2 bg-slate-300 rounded w-1/2"></div>
+                </div>
+                <div class="grid grid-cols-4 gap-2 pt-4">
+                  <div class="aspect-square rounded-lg bg-purple-200 flex items-center justify-center text-xl">🕵️</div>
+                  <div class="aspect-square rounded-lg bg-pink-200 flex items-center justify-center text-xl">🃏</div>
+                  <div class="aspect-square rounded-lg bg-amber-200 flex items-center justify-center text-xl">✏️</div>
+                  <div class="aspect-square rounded-lg bg-green-200 flex items-center justify-center text-xl">🎭</div>
+                </div>
+              </div>
+              <div class="relative z-10">
+                <div class="bg-white rounded-xl p-3 shadow-lg mb-2 flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-sm">😎</div>
+                  <div class="flex-1"><div class="h-2 bg-slate-200 rounded w-full mb-1"></div><div class="h-2 bg-slate-200 rounded w-2/3"></div></div>
+                </div>
+                <div class="bg-white rounded-xl p-3 shadow-lg flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-secondary to-accent flex items-center justify-center text-sm">🦊</div>
+                  <div class="flex-1"><div class="h-2 bg-slate-200 rounded w-full mb-1"></div><div class="h-2 bg-slate-200 rounded w-1/2"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="absolute -top-10 -right-10 w-20 h-20 bg-yellow-400 rounded-full opacity-20 blur-xl animate-pulse"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-primary rounded-full opacity-20 blur-xl animate-pulse delay-1000"></div>
       </div>
     </div>
-
-    <h1 class="hero-title fade-in delay-1"><span class="title-friends">Friends</span><span class="title-loop">Loop</span></h1>
-
-    <p class="hero-tagline fade-in delay-2">
-      Spiele mit deinen Freunden —<br>jeder auf dem eigenen Handy.
-    </p>
-
-    <div class="hero-pills fade-in delay-3">
-      <span class="pill"><span class="dot" style="background:#FF6B6B"></span> Kein Account nötig</span>
-      <span class="pill"><span class="dot" style="background:#4D96FF"></span> Raumcode teilen</span>
-      <span class="pill"><span class="dot" style="background:#56C596"></span> Sofort losspielen</span>
-    </div>
-
-    <div class="hero-buttons fade-in delay-4">
-      <a href="#" class="btn-primary">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
-        Play Store
-      </a>
-      <a href="#" class="btn-appstore">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        App Store
-      </a>
-    </div>
   </div>
-
-  <div class="hero-scroll-hint">
-    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-    Scroll
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <i data-lucide="chevron-down" class="w-8 h-8 text-slate-400"></i>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="how" id="how">
-  <div class="container">
-    <div class="how-header">
-      <div class="section-label fade-in">So funktioniert's</div>
-      <h2 class="section-title fade-in delay-1">In 3 Schritten losspielen</h2>
-      <p class="section-sub fade-in delay-2">Keine Registrierung. Kein Download für deine Freunde nötig. Einfach losspielen.</p>
+<section id="how-it-works" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-slate-900 mb-4">In 3 Schritten spielbereit</h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto">Keine lästige Registrierung, keine Downloads für deine Freunde. Einfach eintreten und loslegen.</p>
     </div>
-
-    <div class="steps-grid">
-      <div class="step-card fade-in delay-1">
-        <div class="step-num">1</div>
-        <div class="step-emoji">🎨</div>
-        <h3>Name &amp; Avatar wählen</h3>
-        <p>Gib deinen Namen ein und wähle aus <strong>24 Emojis</strong> deinen persönlichen Avatar. Fertig in 5 Sekunden.</p>
+    <div class="grid md:grid-cols-3 gap-12">
+      <div class="text-center space-y-6">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center text-4xl border border-primary/20 shadow-lg relative">
+          <span class="absolute -top-3 -right-3 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">1</span>🎨
+        </div>
+        <div><h3 class="text-xl font-bold text-slate-900 mb-2">Name & Avatar wählen</h3><p class="text-slate-600 leading-relaxed">Gib deinen Namen ein und wähle aus vielen Emojis deinen persönlichen Avatar. Fertig in Sekunden.</p></div>
       </div>
-      <div class="step-card fade-in delay-2">
-        <div class="step-num">2</div>
-        <div class="step-emoji">🎮</div>
-        <h3>Spiel auswählen &amp; Raum erstellen</h3>
-        <p>Wähle ein Minispiel und erstelle einen Raum. Du erhältst einen <strong>5-stelligen Code</strong> — ganz einfach.</p>
+      <div class="text-center space-y-6">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-2xl flex items-center justify-center text-4xl border border-secondary/20 shadow-lg relative">
+          <span class="absolute -top-3 -right-3 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">2</span>🎮
+        </div>
+        <div><h3 class="text-xl font-bold text-slate-900 mb-2">Spiel auswählen & Raum erstellen</h3><p class="text-slate-600 leading-relaxed">Wähle ein Minispiel und erstelle einen Raum. Du erhältst einen <strong class="text-secondary">5-stelligen Code</strong> — ganz einfach.</p></div>
       </div>
-      <div class="step-card fade-in delay-3">
-        <div class="step-num">3</div>
-        <div class="step-emoji">🚀</div>
-        <h3>Code teilen &amp; spielen</h3>
-        <p>Teile den Code per Nachricht an deine Freunde. Alle treten bei und spielen <strong>in Echtzeit</strong> — jeder auf dem eigenen Handy.</p>
+      <div class="text-center space-y-6">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-br from-accent/10 to-accent/5 rounded-2xl flex items-center justify-center text-4xl border border-accent/20 shadow-lg relative">
+          <span class="absolute -top-3 -right-3 w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">3</span>🚀
+        </div>
+        <div><h3 class="text-xl font-bold text-slate-900 mb-2">Code teilen & spielen</h3><p class="text-slate-600 leading-relaxed">Teile den Code per Nachricht. Alle treten bei und spielen <strong class="text-accent">in Echtzeit</strong> — jeder auf dem eigenen Handy.</p></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- GAMES -->
-<section class="games" id="games">
-  <div class="container">
-    <div class="games-header">
-      <div class="section-label fade-in">Die Spiele</div>
-      <h2 class="section-title fade-in delay-1">6 Spiele. Unendlich viel Spaß.</h2>
-      <p class="section-sub fade-in delay-2">Von sozialen Deduktionsspielen bis zu klassischen Brettspielen — für jede Runde das richtige Spiel.</p>
+<section id="games" class="py-24 bg-slate-50 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle at 1px 1px,rgba(124,58,237,0.2) 1px,transparent 0);background-size:40px 40px;"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-slate-900 mb-4">Die Spiele</h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto">Von Bluff-Quiz bis Zeichnen — finde das perfekte Spiel für jede Runde.</p>
     </div>
-
-    <div class="games-grid">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
       <!-- Imposter -->
-      <div class="game-card fade-in delay-1" style="--accent:#FF6B6B">
-        <div class="game-header">
-          <div class="game-emoji">🕵️</div>
-          <span class="game-badge">3–12 Spieler · Lokal + Online</span>
-        </div>
-        <div class="game-title">Imposter</div>
-        <p class="game-desc">Alle bekommen ein Wort — einer ein anderes. Finde den Verräter oder täusche alle!</p>
-        <div class="game-features">
-          <span class="game-feature">500 Wörter</span>
-          <span class="game-feature">Spielleiter-Modus</span>
-          <span class="game-feature">Wort erraten</span>
-          <span class="game-feature">Einstellbare Regeln</span>
+      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🕵️</div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-2xl font-bold text-slate-900">Imposter</h3>
+            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">3–12 Spieler</span>
+          </div>
+          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Alle bekommen ein Wort — einer ein anderes. Finde den Verräter oder täusche alle!</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Spielleiter-Modus</span>
+            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Wort erraten</span>
+            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Einstellbare Regeln</span>
+          </div>
         </div>
       </div>
 
       <!-- Bluff-Quiz -->
-      <div class="game-card fade-in delay-2" style="--accent:#C77DFF">
-        <div class="game-header">
-          <div class="game-emoji">🃏</div>
-          <span class="game-badge">2–7 Spieler · Online</span>
-        </div>
-        <div class="game-title">Bluff-Quiz</div>
-        <p class="game-desc">Eine Frage, viele Antworten — nur eine ist echt. Wer blufft am besten?</p>
-        <div class="game-features">
-          <span class="game-feature">500 Wissensfragen</span>
-          <span class="game-feature">Erfundene Antworten</span>
-          <span class="game-feature">Punkte für gute Lügen</span>
+      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🃏</div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-2xl font-bold text-slate-900">Bluff-Quiz</h3>
+            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–7 Spieler</span>
+          </div>
+          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Eine Frage, viele Antworten — nur eine ist echt. Wer blufft am besten?</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Viele Wissensfragen</span>
+            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Erfundene Antworten</span>
+            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Punkte für Lügen</span>
+          </div>
         </div>
       </div>
 
       <!-- Zeichne & Rate -->
-      <div class="game-card fade-in delay-3" style="--accent:#FFD93D">
-        <div class="game-header">
-          <div class="game-emoji">✏️</div>
-          <span class="game-badge">2–8 Spieler · Online</span>
-        </div>
-        <div class="game-title">Zeichne &amp; Rate</div>
-        <p class="game-desc">Einer zeichnet, alle raten. 90 Sekunden pro Runde — wie gut kannst du Kunst erklären?</p>
-        <div class="game-features">
-          <span class="game-feature">Echtzeit-Zeichnung</span>
-          <span class="game-feature">84 Wörter</span>
-          <span class="game-feature">Alle Geräte sync</span>
+      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">✏️</div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-2xl font-bold text-slate-900">Zeichne & Rate</h3>
+            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
+          </div>
+          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Einer zeichnet, alle raten. 90 Sekunden pro Runde — wie gut kannst du Kunst erklären?</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold">Echtzeit-Zeichnung</span>
+            <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold">Alle Geräte sync</span>
+          </div>
         </div>
       </div>
 
       <!-- Wer bin ich? -->
-      <div class="game-card fade-in delay-1" style="--accent:#FF9F43">
-        <div class="game-header">
-          <div class="game-emoji">🎭</div>
-          <span class="game-badge">3–10 Spieler · Online</span>
-        </div>
-        <div class="game-title">Wer bin ich?</div>
-        <p class="game-desc">Errate deinen zugewiesenen Charakter mit Ja/Nein-Fragen. Wer kommt am schnellsten drauf?</p>
-        <div class="game-features">
-          <span class="game-feature">Ja/Nein-Fragen</span>
-          <span class="game-feature">Viele Charaktere</span>
-        </div>
-      </div>
-
-      <!-- Schach -->
-      <div class="game-card fade-in delay-2" style="--accent:#56C596">
-        <div class="game-header">
-          <div class="game-emoji">♟️</div>
-          <span class="game-badge">2 Spieler · Online</span>
-        </div>
-        <div class="game-title">Schach</div>
-        <p class="game-desc">Klassisches Schach gegen einen Freund — direkt in der App, ohne extra Download.</p>
-        <div class="game-features">
-          <span class="game-feature">Klassische Regeln</span>
-          <span class="game-feature">Online 1v1</span>
+      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🎭</div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-2xl font-bold text-slate-900">Wer bin ich?</h3>
+            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">3–10 Spieler</span>
+          </div>
+          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Errate deinen zugewiesenen Charakter mit Ja/Nein-Fragen. Wer kommt am schnellsten drauf?</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold">Ja/Nein-Fragen</span>
+            <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold">Viele Charaktere</span>
+          </div>
         </div>
       </div>
 
-      <!-- Backgammon -->
-      <div class="game-card fade-in delay-3" style="--accent:#FFB347">
-        <div class="game-header">
-          <div class="game-emoji">🎲</div>
-          <span class="game-badge">2 Spieler · Online</span>
+      <!-- Coming Soon – spans 2 columns -->
+      <div class="soon-card p-8 flex flex-col items-center justify-center text-center gap-5 lg:col-span-2 transition-all duration-300 hover:shadow-lg hover:border-purple-300">
+        <div class="flex items-center gap-3 flex-wrap justify-center text-4xl">
+          <span class="animate-bounce" style="animation-delay:0s">🎲</span>
+          <span class="animate-bounce" style="animation-delay:0.15s">❓</span>
+          <span class="animate-bounce" style="animation-delay:0.3s">💣</span>
+          <span class="animate-bounce" style="animation-delay:0.45s">✨</span>
         </div>
-        <div class="game-title">Backgammon</div>
-        <p class="game-desc">Klassisches Backgammon — der perfekte Mix aus Strategie &amp; Glück gegen einen Freund.</p>
-        <div class="game-features">
-          <span class="game-feature">Strategie &amp; Glück</span>
-          <span class="game-feature">Online 1v1</span>
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-primary rounded-full text-xs font-bold uppercase tracking-wider mb-3">
+            <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+            In Entwicklung
+          </div>
+          <h3 class="text-2xl font-bold text-slate-900 mb-2">Mehr Spiele kommen bald!</h3>
+          <p class="text-slate-500 text-sm leading-relaxed max-w-sm mx-auto">Wir arbeiten ständig an neuen Minispielen — von rasanten Quiz-Battles bis zu verrückten Partyformaten. Bleib gespannt! 🚀</p>
         </div>
       </div>
 
     </div>
-
-
   </div>
 </section>
 
 <!-- FEATURES -->
-<section class="features" id="features">
-  <div class="container">
-    <div class="features-header">
-      <div class="section-label fade-in">Warum FriendsLoop?</div>
-      <h2 class="section-title fade-in delay-1">Einfach. Schnell. Spaßig.</h2>
-      <p class="section-sub fade-in delay-2">Designt für spontane Spieleabende — keine Hürden, nur Spaß.</p>
-    </div>
+<section id="features" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div class="space-y-8">
+        <h2 class="text-4xl font-bold text-slate-900 leading-tight">Warum <span class="gradient-text">FriendsLoop</span>?</h2>
+        <div class="space-y-6">
+          <div class="flex gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-colors text-primary"><i data-lucide="zap" class="w-6 h-6"></i></div>
+            <div><h3 class="text-xl font-bold text-slate-900 mb-1">Echtzeit-Synchronisation</h3><p class="text-slate-600">Alles passiert live. Kein Reload, kein Warten — alle sehen das Gleiche zur gleichen Zeit.</p></div>
+          </div>
+          <div class="flex gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-secondary group-hover:text-white transition-colors text-secondary"><i data-lucide="user-x" class="w-6 h-6"></i></div>
+            <div><h3 class="text-xl font-bold text-slate-900 mb-1">Kein Account nötig</h3><p class="text-slate-600">Einfach Name eingeben und losspielen. Keine E-Mail, kein Passwort, kein Stress.</p></div>
+          </div>
+          <div class="flex gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent group-hover:text-white transition-colors text-accent"><i data-lucide="hash" class="w-6 h-6"></i></div>
+            <div><h3 class="text-xl font-bold text-slate-900 mb-1">5-stelliger Raumcode</h3><p class="text-slate-600">Erstelle einen Raum und teile den kurzen Code per WhatsApp oder Nachricht.</p></div>
+          </div>
+          <div class="flex gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0 group-hover:bg-green-500 group-hover:text-white transition-colors text-green-600"><i data-lucide="gift" class="w-6 h-6"></i></div>
+            <div><h3 class="text-xl font-bold text-slate-900 mb-1">Komplett kostenlos</h3><p class="text-slate-600">Alle Spiele, alle Features — für alle Spieler komplett gratis spielbar.</p></div>
+          </div>
+        </div>
+      </div>
 
-    <div class="features-grid">
-      <div class="feat-card fade-in delay-1">
-        <div class="feat-icon g1">⚡</div>
-        <h3>Echtzeit-Synchronisation</h3>
-        <p>Alles passiert live. Kein Reload, kein Warten — alle sehen das Gleiche zur gleichen Zeit.</p>
-      </div>
-      <div class="feat-card fade-in delay-2">
-        <div class="feat-icon g2">🚫</div>
-        <h3>Kein Account nötig</h3>
-        <p>Einfach Name eingeben und losspielen. Keine E-Mail, kein Passwort, kein Stress.</p>
-      </div>
-      <div class="feat-card fade-in delay-3">
-        <div class="feat-icon g3">🔢</div>
-        <h3>5-stelliger Raumcode</h3>
-        <p>Erstelle einen Raum und teile den kurzen Code per WhatsApp oder Nachricht.</p>
-      </div>
-      <div class="feat-card fade-in delay-4">
-        <div class="feat-icon g4">🎁</div>
-        <h3>Komplett kostenlos</h3>
-        <p>Alle Spiele, alle Features — für alle Spieler komplett gratis spielbar.</p>
+      <div class="relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-3xl transform rotate-3 opacity-20"></div>
+        <div class="relative bg-slate-900 rounded-3xl p-8 text-white shadow-2xl">
+          <div class="space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">🎮</div>
+                <div><div class="font-bold">Spielraum #8X2F9</div><div class="text-sm text-slate-400">4 Spieler online</div></div>
+              </div>
+              <div class="flex -space-x-2">
+                <div class="w-8 h-8 rounded-full bg-red-500 border-2 border-slate-900 flex items-center justify-center text-xs">😎</div>
+                <div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-slate-900 flex items-center justify-center text-xs">🦊</div>
+                <div class="w-8 h-8 rounded-full bg-green-500 border-2 border-slate-900 flex items-center justify-center text-xs">🐼</div>
+                <div class="w-8 h-8 rounded-full bg-slate-600 border-2 border-slate-900 flex items-center justify-center text-xs text-white">+1</div>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="bg-slate-800 rounded-xl p-4 flex items-center gap-3 animate-pulse">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm">Max ist beigetreten</span>
+              </div>
+              <div class="bg-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm">Lisa ist beigetreten</span>
+              </div>
+              <div class="bg-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div><span class="text-sm">Warte auf Spielstart...</span>
+              </div>
+            </div>
+            <button class="w-full py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-bold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-primary/25">Spiel starten</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
-<section class="cta-banner">
-  <div class="container">
-    <div class="cta-inner fade-in">
-      <div style="font-size:3rem; margin-bottom:16px;">🎉</div>
-      <h2>Bereit für die nächste Spielerunde?</h2>
-      <p>Lade FriendsLoop herunter und starte noch heute — kostenlos &amp; ohne Account.</p>
-      <a href="#" class="btn-primary" style="display:inline-flex;">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
-        Play Store
+<!-- CTA -->
+<section class="py-24 bg-slate-900 relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20"></div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Bereit zum Spielen?</h2>
+    <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">Lade die App herunter und starte deine erste Runde in weniger als einer Minute. Kein Account nötig.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-xl group">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
+        <div class="text-left"><div class="text-xs font-normal opacity-60">Jetzt herunterladen</div><div>Play Store</div></div>
       </a>
-      <a href="#" class="btn-appstore" style="display:inline-flex;">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        App Store
+      <a href="#" class="flex items-center justify-center gap-3 px-8 py-4 bg-slate-800 text-white rounded-2xl font-bold text-lg hover:bg-slate-700 transition-all hover:scale-105 active:scale-95 shadow-xl border border-slate-700 group">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div class="text-left"><div class="text-xs font-normal opacity-60">Download on the</div><div>App Store</div></div>
       </a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-logo"><span class="logo-friends">Friends</span><span class="logo-loop">Loop</span></div>
-  <p class="footer-tagline">Die Party-Game-App für deine Freundesrunde.</p>
-  <div class="footer-links">
-    <a href="datenschutz.html">Datenschutz</a>
+<footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row justify-between gap-10 mb-10">
+      <div class="max-w-sm">
+        <div class="flex items-center gap-3 mb-4">
+          <img src="icon.png" alt="FriendsLoop" class="w-9 h-9 rounded-xl object-cover">
+          <span class="font-bold text-xl text-white">FriendsLoop</span>
+        </div>
+        <p class="text-sm leading-relaxed">Die spaßigste Art, mit Freunden zu spielen. Kein Account, keine Wartezeit — einfach eintreten und loslegen.</p>
+      </div>
+
+      <div>
+        <h4 class="text-white font-semibold mb-4">Rechtliches</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" onclick="openDatenschutz(); return false;" class="hover:text-white transition-colors cursor-pointer">Datenschutz</a></li>
+          <li>
+            <button onclick="document.getElementById('impressum-toggle').classList.toggle('hidden')" class="hover:text-white transition-colors text-left">Impressum</button>
+            <div id="impressum-toggle" class="hidden mt-3 text-xs leading-7 text-slate-500">
+              Faruk Türkaslan<br>
+              c/o Postflex #8786<br>
+              Emsdettener Str. 10<br>
+              48268 Greven<br>
+              <a href="mailto:development.faruk@gmail.com" class="text-purple-400 hover:text-purple-300 transition-colors">development.faruk@gmail.com</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-900 pt-8 text-sm text-center text-slate-600">
+      © 2025 FriendsLoop. Alle Rechte vorbehalten. — Made with ❤️
+    </div>
   </div>
-  <div class="footer-impressum">
-    <strong>Impressum</strong><br>
-    Faruk Türkaslan<br>
-    c/o Postflex #8786<br>
-    Emsdettener Str. 10<br>
-    48268 Greven<br>
-    <a href="/cdn-cgi/l/email-protection#0b6f6e7d6e67647b666e657f256d6a797e604b6c666a626725686466" style="color:var(--muted); text-decoration:none; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'"><span class="__cf_email__" data-cfemail="e6828390838a89968b838892c8808794938da6818b878f8ac885898b">[email&#160;protected]</span></a>
-  </div>
-  <div class="footer-divider"></div>
-  <p class="footer-copy">FriendsLoop — Made with <span class="footer-heart">❤️</span> · © 2025 FriendsLoop. Alle Rechte vorbehalten.</p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Intersection Observer for fade-in animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.12 });
+<!-- DATENSCHUTZ MODAL -->
+<div id="ds-modal">
+  <div id="ds-backdrop"></div>
+  <div id="ds-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 0 16px;">
+      <span style="font-family:Inter,sans-serif;font-size:1.2rem;font-weight:800;color:#0f172a;">🔒 Datenschutzerklärung</span>
+      <button onclick="closeDatenschutz()" style="background:#f1f5f9;border:none;color:#64748b;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;">✕</button>
+    </div>
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    <!-- Erhobene Daten -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#fef2f2;">📋</div><h2>Welche Daten werden erhoben?</h2></div>
+      <div class="ds-item"><div class="ds-num">1</div><div class="ds-body"><strong>Spielername & Avatar</strong><p>Ausschließlich lokal auf deinem Gerät gespeichert (SharedPreferences). Kein Account, keine E-Mail, kein Passwort.</p></div></div>
+      <div class="ds-item"><div class="ds-num">2</div><div class="ds-body"><strong>Raum-Daten</strong><p>Raumcode, Spielername, Avatar, Spielstatus sowie Stimmen und Antworten werden temporär in der Firebase Realtime Database gespeichert und nach Spielende automatisch gelöscht.</p></div></div>
+      <div class="ds-item"><div class="ds-num">3</div><div class="ds-body"><strong>Zeichnungsdaten</strong><p>Beim Spiel „Zeichne & Rate" werden Strichkoordinaten temporär über Firebase übertragen, um die Zeichnung in Echtzeit darzustellen.</p></div></div>
+      <div class="ds-item"><div class="ds-num green">✓</div><div class="ds-body"><strong>Keine personenbezogenen Daten</strong><p>Kein echter Name, keine E-Mail, keine Telefonnummer, kein Geburtsdatum.</p></div></div>
+    </div>
 
-  // ── FLOATING PARTICLES ──
-  const canvas = document.createElement('canvas');
-  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.55;';
-  document.body.prepend(canvas);
-  const ctx = canvas.getContext('2d');
+    <!-- Datenspeicherung -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#f0fdf4;">🗄️</div><h2>Datenspeicherung</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci yes">✓</span><span><strong>Spielername & Avatar</strong> — lokal auf dem Gerät, bis die App deinstalliert wird.</span></li>
+        <li><span class="ds-ci yes">✓</span><span><strong>Spieldaten</strong> (Räume, Stimmen, Zeichnungen) — temporär in Firebase, nach Spielende automatisch gelöscht.</span></li>
+        <li><span class="ds-ci no">✗</span><span>Keine dauerhafte Speicherung von Spieldaten auf Servern.</span></li>
+      </ul>
+    </div>
 
-  const colors = ['#FF6B6B','#FF8E53','#4D96FF','#C77DFF','#56C596','#FFD93D'];
-  let W, H, particles;
+    <!-- Drittanbieter -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#eff6ff;">🔌</div><h2>Drittanbieter-Dienste</h2></div>
+      <div class="ds-provider"><span class="pe">🔥</span><div><strong>Google Firebase Realtime Database</strong><p>Speicherung temporärer Spieldaten. Server in EU/USA. Anbieter: Google LLC.</p></div></div>
+      <div class="ds-provider"><span class="pe">🛡️</span><div><strong>Google Firebase App Check</strong><p>Schutz der Backend-Dienste vor Missbrauch.</p></div></div>
+      <div class="ds-provider"><span class="pe">📢</span><div><strong>Google AdMob (Mobile Ads)</strong><p>Anzeige von Werbung. Kann Werbe-ID (GAID/IDFA) und Geräteinformationen erfassen.</p></div></div>
+      <div class="ds-provider"><span class="pe">🛒</span><div><strong>Google Play Billing (In-App-Käufe)</strong><p>Zahlungsabwicklung über Google. Wir erhalten keine Zahlungsdaten.</p></div></div>
+      <div class="ds-provider"><span class="pe">🍎</span><div><strong>Apple StoreKit (In-App-Käufe)</strong><p>Zahlungsabwicklung über Apple. Wir erhalten keine Zahlungsdaten.</p></div></div>
+    </div>
 
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    <!-- Werbe-ID -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#fffbeb;">📣</div><h2>Werbe-ID & Tracking</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci info">ℹ</span><span>Google AdMob kann die <strong>Werbe-ID des Geräts</strong> (GAID/IDFA) für personalisierte oder nicht-personalisierte Werbung verwenden.</span></li>
+        <li><span class="ds-ci yes">✓</span><span>Personalisierte Werbung kann in den <strong>Geräteeinstellungen deaktiviert</strong> werden.</span></li>
+      </ul>
+      <div class="ds-box yellow"><strong>Hinweis:</strong> Datenschutzrichtlinie von Google: <a href="https://policies.google.com/privacy" target="_blank" style="color:#92400e;font-weight:700;">policies.google.com/privacy</a></div>
+    </div>
+
+    <!-- Kein Account -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#f0fdf4;">🚫</div><h2>Keine Registrierung / kein Account</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci no">✗</span><span>Die App erfordert <strong>keinen Account</strong> und keine Registrierung.</span></li>
+        <li><span class="ds-ci no">✗</span><span>Es werden <strong>keine Anmeldedaten</strong> erhoben oder gespeichert.</span></li>
+      </ul>
+      <div class="ds-box green"><strong>Einfach spielen:</strong> Gib einen Spielernamen ein und leg direkt los.</div>
+    </div>
+
+    <!-- Kinder -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#faf5ff;">👶</div><h2>Kinder (COPPA / DSGVO-K)</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci info">ℹ</span><span>Die App richtet sich an Nutzer <strong>ab 14 Jahren</strong>.</span></li>
+        <li><span class="ds-ci no">✗</span><span>Es werden keine personenbezogenen Daten von Kindern unter 14 Jahren wissentlich erhoben.</span></li>
+      </ul>
+    </div>
+
+    <!-- Berechtigungen -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#fff7ed;">📱</div><h2>App-Berechtigungen</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci yes">✓</span><span><strong>Internetzugang</strong> — für Online-Spiele, Echtzeit-Synchronisation und Werbung.</span></li>
+        <li><span class="ds-ci no">✗</span><span>Kein Zugriff auf Kamera, Mikrofon, Standort oder Kontakte.</span></li>
+      </ul>
+    </div>
+
+    <!-- Kontakt -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#eff6ff;">✉️</div><h2>Kontakt & Verantwortlicher</h2></div>
+      <p style="font-size:0.9rem;line-height:2;color:#64748b;">
+        <strong style="color:#0f172a;">Faruk Türkaslan</strong><br>
+        c/o Postflex #8786<br>
+        Emsdettener Str. 10<br>
+        48268 Greven<br>
+        <a href="mailto:development.faruk@gmail.com" style="color:#7C3AED;font-weight:700;text-decoration:none;">development.faruk@gmail.com</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  // Navbar scroll glass effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) navbar.classList.add('glass','shadow-sm');
+    else navbar.classList.remove('glass','shadow-sm');
+  });
+
+  // Datenschutz modal
+  function openDatenschutz() {
+    document.getElementById('ds-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
-
-  function init() {
-    resize();
-    particles = Array.from({length: 55}, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 2 + 0.5,
-      dx: (Math.random() - 0.5) * 0.35,
-      dy: (Math.random() - 0.5) * 0.35,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      alpha: Math.random() * 0.4 + 0.1,
-    }));
+  function closeDatenschutz() {
+    document.getElementById('ds-modal').classList.remove('open');
+    document.body.style.overflow = '';
   }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.alpha;
-      ctx.fill();
-      p.x += p.dx;
-      p.y += p.dy;
+  document.getElementById('ds-backdrop').addEventListener('click', closeDatenschutz);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDatenschutz(); });
+</script>
+</body>
+</html>
