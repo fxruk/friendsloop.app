@@ -780,7 +780,7 @@
   <div class="footer-logo"><span class="logo-friends">Friends</span><span class="logo-loop">Loop</span></div>
   <p class="footer-tagline">Die Party-Game-App für deine Freundesrunde.</p>
   <div class="footer-links">
-    <a href="#">Datenschutz</a>
+    <a href="datenschutz.html">Datenschutz</a>
   </div>
   <div class="footer-impressum">
     <strong>Impressum</strong><br>
@@ -788,13 +788,13 @@
     c/o Postflex #8786<br>
     Emsdettener Str. 10<br>
     48268 Greven<br>
-    <a href="mailto:development.faruk@gmail.com" style="color:var(--muted); text-decoration:none; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">development.faruk@gmail.com</a>
+    <a href="/cdn-cgi/l/email-protection#0b6f6e7d6e67647b666e657f256d6a797e604b6c666a626725686466" style="color:var(--muted); text-decoration:none; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'"><span class="__cf_email__" data-cfemail="e6828390838a89968b838892c8808794938da6818b878f8ac885898b">[email&#160;protected]</span></a>
   </div>
   <div class="footer-divider"></div>
   <p class="footer-copy">FriendsLoop — Made with <span class="footer-heart">❤️</span> · © 2025 FriendsLoop. Alle Rechte vorbehalten.</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Intersection Observer for fade-in animations
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -843,16 +843,3 @@
       ctx.fill();
       p.x += p.dx;
       p.y += p.dy;
-      if (p.x < 0 || p.x > W) p.dx *= -1;
-      if (p.y < 0 || p.y > H) p.dy *= -1;
-    });
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
-  }
-
-  window.addEventListener('resize', () => { resize(); });
-  init();
-  draw();
-</script>
-</body>
-</html>
