@@ -27,7 +27,7 @@
   .game-card:hover { transform:translateY(-8px); box-shadow:0 20px 40px -15px rgba(124,58,237,0.3); }
   .blob { position:absolute; filter:blur(80px); opacity:0.4; z-index:0; }
   .soon-card { background:linear-gradient(135deg,rgba(124,58,237,0.04),rgba(236,72,153,0.04)); border:2px dashed rgba(124,58,237,0.2); border-radius:24px; }
-  
+  /* DATENSCHUTZ MODAL */
   #ds-modal { display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto; }
   #ds-modal.open { display:block; }
   #ds-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); }
@@ -49,10 +49,18 @@
   .ds-ci.yes { background:#dcfce7; color:#16a34a; }
   .ds-ci.no { background:#fee2e2; color:#dc2626; }
   .ds-ci.info{ background:#ede9fe; color:#7C3AED; }
+  .ds-provider { display:flex; align-items:flex-start; gap:12px; padding:11px 0; border-bottom:1px solid #f8fafc; }
+  .ds-provider:last-child { border-bottom:none; padding-bottom:0; }
+  .ds-provider:first-child { padding-top:0; }
+  .ds-provider .pe { font-size:1.25rem; flex-shrink:0; margin-top:2px; }
+  .ds-provider strong { display:block; font-weight:700; font-size:0.9rem; margin-bottom:2px; color:#0f172a; }
+  .ds-provider p { font-size:0.82rem; color:#64748b; line-height:1.55; }
+  .ds-box { border-radius:11px; padding:13px 16px; margin-top:12px; font-size:0.83rem; line-height:1.65; }
+  .ds-box.green { background:#f0fdf4; border:1px solid #bbf7d0; color:#166534; }
+  .ds-box.yellow { background:#fffbeb; border:1px solid #fde68a; color:#92400e; }
 </style>
 </head>
 <body class="font-sans text-slate-800 bg-slate-50 overflow-x-hidden">
-
 <!-- NAV -->
 <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,13 +70,11 @@
         <span class="font-bold text-2xl tracking-tight text-slate-900">FriendsLoop</span>
       </div>
       <div class="flex items-center gap-3">
-        <a href="https://play.google.com/store/apps/details?id=com.farukturkaslan.friendsandplay&pcampaignid=friendsloop_web" 
-           target="_blank" class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white rounded-full font-semibold text-sm hover:bg-slate-800 transition-all hover:scale-105 shadow-lg">
+        <a href="#" class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white rounded-full font-semibold text-sm hover:bg-slate-800 transition-all hover:scale-105 shadow-lg">
           <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
           Play Store
         </a>
-        <a href="https://apps.apple.com/de/app/friendsloop/id6761231896" 
-           target="_blank" class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-white text-slate-900 border border-slate-200 rounded-full font-semibold text-sm hover:bg-slate-50 transition-all hover:scale-105 shadow-md">
+        <a href="#" class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-white text-slate-900 border border-slate-200 rounded-full font-semibold text-sm hover:bg-slate-50 transition-all hover:scale-105 shadow-md">
           <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
           App Store
         </a>
@@ -76,13 +82,11 @@
     </div>
   </div>
 </nav>
-
 <!-- HERO -->
 <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
   <div class="blob w-96 h-96 bg-purple-500 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
   <div class="blob w-96 h-96 bg-pink-500 rounded-full bottom-0 right-0 translate-x-1/2 translate-y-1/2"></div>
   <div class="blob w-64 h-64 bg-amber-400 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20"></div>
-  
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div class="text-center lg:text-left space-y-8">
@@ -96,15 +100,23 @@
         <p class="text-xl text-slate-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
           Sofort losspielen ohne Registrierung. Erstelle einen Raum, teile den Code und los geht's!
         </p>
-        
+        <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start flex-wrap">
+          <div class="flex items-center gap-3 text-slate-700 font-medium bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200">
+            <i data-lucide="check-circle" class="w-5 h-5 text-primary"></i><span>Kein Account nötig</span>
+          </div>
+          <div class="flex items-center gap-3 text-slate-700 font-medium bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200">
+            <i data-lucide="share-2" class="w-5 h-5 text-secondary"></i><span>Raumcode teilen</span>
+          </div>
+          <div class="flex items-center gap-3 text-slate-700 font-medium bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200">
+            <i data-lucide="zap" class="w-5 h-5 text-accent"></i><span>Sofort losspielen</span>
+          </div>
+        </div>
         <div class="flex flex-col sm:flex-row gap-4 pt-2 justify-center lg:justify-start">
-          <a href="https://play.google.com/store/apps/details?id=com.farukturkaslan.friendsandplay&pcampaignid=friendsloop_web" 
-             target="_blank" class="flex items-center justify-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-slate-900/20 group">
+          <a href="#" class="flex items-center justify-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-slate-900/20 group">
             <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
             <div class="text-left"><div class="text-xs font-normal opacity-70">Jetzt herunterladen</div><div>Play Store</div></div>
           </a>
-          <a href="https://apps.apple.com/de/app/friendsloop/id6761231896" 
-             target="_blank" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all hover:scale-105 active:scale-95 shadow-xl border border-slate-200 group">
+          <a href="#" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all hover:scale-105 active:scale-95 shadow-xl border border-slate-200 group">
             <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
             <div class="text-left"><div class="text-xs font-normal opacity-50">Download on the</div><div>App Store</div></div>
           </a>
@@ -144,11 +156,15 @@
             </div>
           </div>
         </div>
+        <div class="absolute -top-10 -right-10 w-20 h-20 bg-yellow-400 rounded-full opacity-20 blur-xl animate-pulse"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-primary rounded-full opacity-20 blur-xl animate-pulse delay-1000"></div>
       </div>
     </div>
   </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <i data-lucide="chevron-down" class="w-8 h-8 text-slate-400"></i>
+  </div>
 </section>
-
 <!-- HOW IT WORKS -->
 <section id="how-it-works" class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -178,15 +194,16 @@
     </div>
   </div>
 </section>
-
 <!-- GAMES -->
 <section id="games" class="py-24 bg-slate-50 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle at 1px 1px,rgba(124,58,237,0.2) 1px,transparent 0);background-size:40px 40px;"></div>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="text-center mb-16">
       <h2 class="text-4xl font-bold text-slate-900 mb-4">Die Spiele</h2>
       <p class="text-lg text-slate-600 max-w-2xl mx-auto">Von Bluff-Quiz bis Zeichnen — finde das perfekte Spiel für jede Runde.</p>
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Imposter -->
       <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
         <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
         <div class="relative z-10">
@@ -196,9 +213,63 @@
             <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">3–12 Spieler</span>
           </div>
           <p class="text-slate-600 mb-4 text-sm leading-relaxed">Alle bekommen ein Wort — einer ein anderes. Finde den Verräter oder täusche alle!</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Spielleiter-Modus</span>
+            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Wort erraten</span>
+            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Einstellbare Regeln</span>
+          </div>
         </div>
       </div>
-      <!-- Weitere Spiele können hier ergänzt werden -->
+      <!-- Bluff-Quiz -->
+      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🃏</div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-2xl font-bold text-slate-900">Bluff-Quiz</h3>
+            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–7 Spieler</span>
+          </div>
+          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Eine Frage, viele Antworten — nur eine ist echt. Wer blufft am besten?</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Viele Wissensfragen</span>
+            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Erfundene Antworten</span>
+            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Punkte für Lügen</span>
+          </div>
+        </div>
+      </div>
+      <!-- Zeichne & Rate -->
+      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">✏️</div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-2xl font-bold text-slate-900">Zeichne & Rate</h3>
+            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
+          </div>
+          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Einer zeichnet, alle raten. 90 Sekunden pro Runde — wie gut kannst du Kunst erklären?</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold">Echtzeit-Zeichnung</span>
+            <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold">Alle Geräte sync</span>
+          </div>
+        </div>
+      </div>
+      <!-- Wer bin ich? -->
+      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🎭</div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-2xl font-bold text-slate-900">Wer bin ich?</h3>
+            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">3–10 Spieler</span>
+          </div>
+          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Errate deinen zugewiesenen Charakter mit Ja/Nein-Fragen. Wer kommt am schnellsten drauf?</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold">Ja/Nein-Fragen</span>
+            <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold">Viele Charaktere</span>
+          </div>
+        </div>
+      </div>
+      <!-- Coming Soon – spans 2 columns -->
       <div class="soon-card p-8 flex flex-col items-center justify-center text-center gap-5 lg:col-span-2 transition-all duration-300 hover:shadow-lg hover:border-purple-300">
         <div class="flex items-center gap-3 flex-wrap justify-center text-4xl">
           <span class="animate-bounce" style="animation-delay:0s">🎲</span>
@@ -212,13 +283,12 @@
             In Entwicklung
           </div>
           <h3 class="text-2xl font-bold text-slate-900 mb-2">Mehr Spiele kommen bald!</h3>
-          <p class="text-slate-500 text-sm leading-relaxed max-w-sm mx-auto">Wir arbeiten ständig an neuen Minispielen. Bleib gespannt! 🚀</p>
+          <p class="text-slate-500 text-sm leading-relaxed max-w-sm mx-auto">Wir arbeiten ständig an neuen Minispielen — von rasanten Quiz-Battles bis zu verrückten Partyformaten. Bleib gespannt! 🚀</p>
         </div>
       </div>
     </div>
   </div>
 </section>
-
 <!-- FEATURES -->
 <section id="features" class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -228,15 +298,19 @@
         <div class="space-y-6">
           <div class="flex gap-4 group">
             <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-colors text-primary"><i data-lucide="zap" class="w-6 h-6"></i></div>
-            <div><h3 class="text-xl font-bold text-slate-900 mb-1">Echtzeit-Synchronisation</h3><p class="text-slate-600">Alles passiert live. Kein Reload, kein Warten.</p></div>
+            <div><h3 class="text-xl font-bold text-slate-900 mb-1">Echtzeit-Synchronisation</h3><p class="text-slate-600">Alles passiert live. Kein Reload, kein Warten — alle sehen das Gleiche zur gleichen Zeit.</p></div>
           </div>
           <div class="flex gap-4 group">
             <div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-secondary group-hover:text-white transition-colors text-secondary"><i data-lucide="user-x" class="w-6 h-6"></i></div>
-            <div><h3 class="text-xl font-bold text-slate-900 mb-1">Kein Account nötig</h3><p class="text-slate-600">Einfach Name eingeben und losspielen.</p></div>
+            <div><h3 class="text-xl font-bold text-slate-900 mb-1">Kein Account nötig</h3><p class="text-slate-600">Einfach Name eingeben und losspielen. Keine E-Mail, kein Passwort, kein Stress.</p></div>
           </div>
           <div class="flex gap-4 group">
             <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent group-hover:text-white transition-colors text-accent"><i data-lucide="hash" class="w-6 h-6"></i></div>
-            <div><h3 class="text-xl font-bold text-slate-900 mb-1">5-stelliger Raumcode</h3><p class="text-slate-600">Teile einfach den Code per WhatsApp.</p></div>
+            <div><h3 class="text-xl font-bold text-slate-900 mb-1">5-stelliger Raumcode</h3><p class="text-slate-600">Erstelle einen Raum und teile den kurzen Code per WhatsApp oder Nachricht.</p></div>
+          </div>
+          <div class="flex gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0 group-hover:bg-green-500 group-hover:text-white transition-colors text-green-600"><i data-lucide="gift" class="w-6 h-6"></i></div>
+            <div><h3 class="text-xl font-bold text-slate-900 mb-1">Komplett kostenlos</h3><p class="text-slate-600">Alle Spiele, alle Features — für alle Spieler komplett gratis spielbar.</p></div>
           </div>
         </div>
       </div>
@@ -249,39 +323,49 @@
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">🎮</div>
                 <div><div class="font-bold">Spielraum #8X2F9</div><div class="text-sm text-slate-400">4 Spieler online</div></div>
               </div>
+              <div class="flex -space-x-2">
+                <div class="w-8 h-8 rounded-full bg-red-500 border-2 border-slate-900 flex items-center justify-center text-xs">😎</div>
+                <div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-slate-900 flex items-center justify-center text-xs">🦊</div>
+                <div class="w-8 h-8 rounded-full bg-green-500 border-2 border-slate-900 flex items-center justify-center text-xs">🐼</div>
+                <div class="w-8 h-8 rounded-full bg-slate-600 border-2 border-slate-900 flex items-center justify-center text-xs text-white">+1</div>
+              </div>
             </div>
-            <button onclick="document.getElementById('download-section').scrollIntoView({ behavior: 'smooth' });" 
-                    class="w-full py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-bold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-primary/25">
-              Spiel starten
-            </button>
+            <div class="space-y-3">
+              <div class="bg-slate-800 rounded-xl p-4 flex items-center gap-3 animate-pulse">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm">Max ist beigetreten</span>
+              </div>
+              <div class="bg-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm">Lisa ist beigetreten</span>
+              </div>
+              <div class="bg-slate-800 rounded-xl p-4 flex items-center gap-3">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div><span class="text-sm">Warte auf Spielstart...</span>
+              </div>
+            </div>
+            <button class="w-full py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-bold text-lg hover:opacity-90 transition-opacity shadow-lg shadow-primary/25">Spiel starten</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- CTA DOWNLOAD -->
-<section id="download-section" class="py-24 bg-slate-900 relative overflow-hidden">
+<!-- CTA -->
+<section class="py-24 bg-slate-900 relative overflow-hidden">
   <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20"></div>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
     <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Bereit zum Spielen?</h2>
     <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">Lade die App herunter und starte deine erste Runde in weniger als einer Minute. Kein Account nötig.</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="https://play.google.com/store/apps/details?id=com.farukturkaslan.friendsandplay&pcampaignid=friendsloop_web" 
-         target="_blank" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-xl group">
+      <a href="#" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-xl group">
         <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
         <div class="text-left"><div class="text-xs font-normal opacity-60">Jetzt herunterladen</div><div>Play Store</div></div>
       </a>
-      <a href="https://apps.apple.com/de/app/friendsloop/id6761231896" 
-         target="_blank" class="flex items-center justify-center gap-3 px-8 py-4 bg-slate-800 text-white rounded-2xl font-bold text-lg hover:bg-slate-700 transition-all hover:scale-105 active:scale-95 shadow-xl border border-slate-700 group">
+      <a href="#" class="flex items-center justify-center gap-3 px-8 py-4 bg-slate-800 text-white rounded-2xl font-bold text-lg hover:bg-slate-700 transition-all hover:scale-105 active:scale-95 shadow-xl border border-slate-700 group">
         <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         <div class="text-left"><div class="text-xs font-normal opacity-60">Download on the</div><div>App Store</div></div>
       </a>
     </div>
   </div>
 </section>
-
 <!-- FOOTER -->
 <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -297,45 +381,114 @@
         <h4 class="text-white font-semibold mb-4">Rechtliches</h4>
         <ul class="space-y-2 text-sm">
           <li><a href="#" onclick="openDatenschutz(); return false;" class="hover:text-white transition-colors cursor-pointer">Datenschutz</a></li>
-          <li><button onclick="document.getElementById('impressum-toggle').classList.toggle('hidden')" class="hover:text-white transition-colors text-left">Impressum</button></li>
+          <li>
+            <button onclick="document.getElementById('impressum-toggle').classList.toggle('hidden')" class="hover:text-white transition-colors text-left">Impressum</button>
+            <div id="impressum-toggle" class="hidden mt-3 text-xs leading-7 text-slate-500">
+              Faruk Türkaslan<br>
+              c/o Postflex #8786<br>
+              Emsdettener Str. 10<br>
+              48268 Greven<br>
+              <a href="mailto:development.faruk@gmail.com" class="text-purple-400 hover:text-purple-300 transition-colors">development.faruk@gmail.com</a>
+            </div>
+          </li>
         </ul>
-        <div id="impressum-toggle" class="hidden mt-3 text-xs leading-7 text-slate-500">
-          Faruk Türkaslan<br>
-          c/o Postflex #8786<br>
-          Emsdettener Str. 10<br>
-          48268 Greven<br>
-          <a href="mailto:development.faruk@gmail.com" class="text-purple-400 hover:text-purple-300">development.faruk@gmail.com</a>
-        </div>
       </div>
     </div>
     <div class="border-t border-slate-900 pt-8 text-sm text-center text-slate-600">
-      © 2025 FriendsLoop. Alle Rechte vorbehalten.
+      © 2025 FriendsLoop. Alle Rechte vorbehalten. — Made with ❤️
     </div>
   </div>
 </footer>
-
 <!-- DATENSCHUTZ MODAL -->
 <div id="ds-modal">
   <div id="ds-backdrop"></div>
   <div id="ds-panel">
-    <!-- Hier kannst du deinen vollständigen Datenschutz-Inhalt einfügen -->
     <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 0 16px;">
       <span style="font-family:Inter,sans-serif;font-size:1.2rem;font-weight:800;color:#0f172a;">🔒 Datenschutzerklärung</span>
       <button onclick="closeDatenschutz()" style="background:#f1f5f9;border:none;color:#64748b;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;">✕</button>
     </div>
-    <!-- Dein bisheriger Modal-Inhalt kann hier eingefügt werden -->
+    <!-- Erhobene Daten -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#fef2f2;">📋</div><h2>Welche Daten werden erhoben?</h2></div>
+      <div class="ds-item"><div class="ds-num">1</div><div class="ds-body"><strong>Spielername & Avatar</strong><p>Ausschließlich lokal auf deinem Gerät gespeichert (SharedPreferences). Kein Account, keine E-Mail, kein Passwort.</p></div></div>
+      <div class="ds-item"><div class="ds-num">2</div><div class="ds-body"><strong>Raum-Daten</strong><p>Raumcode, Spielername, Avatar, Spielstatus sowie Stimmen und Antworten werden temporär in der Firebase Realtime Database gespeichert und nach Spielende automatisch gelöscht.</p></div></div>
+      <div class="ds-item"><div class="ds-num">3</div><div class="ds-body"><strong>Zeichnungsdaten</strong><p>Beim Spiel „Zeichne & Rate" werden Strichkoordinaten temporär über Firebase übertragen, um die Zeichnung in Echtzeit darzustellen.</p></div></div>
+      <div class="ds-item"><div class="ds-num green">✓</div><div class="ds-body"><strong>Keine personenbezogenen Daten</strong><p>Kein echter Name, keine E-Mail, keine Telefonnummer, kein Geburtsdatum.</p></div></div>
+    </div>
+    <!-- Datenspeicherung -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#f0fdf4;">🗄️</div><h2>Datenspeicherung</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci yes">✓</span><span><strong>Spielername & Avatar</strong> — lokal auf dem Gerät, bis die App deinstalliert wird.</span></li>
+        <li><span class="ds-ci yes">✓</span><span><strong>Spieldaten</strong> (Räume, Stimmen, Zeichnungen) — temporär in Firebase, nach Spielende automatisch gelöscht.</span></li>
+        <li><span class="ds-ci no">✗</span><span>Keine dauerhafte Speicherung von Spieldaten auf Servern.</span></li>
+      </ul>
+    </div>
+    <!-- Drittanbieter -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#eff6ff;">🔌</div><h2>Drittanbieter-Dienste</h2></div>
+      <div class="ds-provider"><span class="pe">🔥</span><div><strong>Google Firebase Realtime Database</strong><p>Speicherung temporärer Spieldaten. Server in EU/USA. Anbieter: Google LLC.</p></div></div>
+      <div class="ds-provider"><span class="pe">🛡️</span><div><strong>Google Firebase App Check</strong><p>Schutz der Backend-Dienste vor Missbrauch.</p></div></div>
+      <div class="ds-provider"><span class="pe">📢</span><div><strong>Google AdMob (Mobile Ads)</strong><p>Anzeige von Werbung. Kann Werbe-ID (GAID/IDFA) und Geräteinformationen erfassen.</p></div></div>
+      <div class="ds-provider"><span class="pe">🛒</span><div><strong>Google Play Billing (In-App-Käufe)</strong><p>Zahlungsabwicklung über Google. Wir erhalten keine Zahlungsdaten.</p></div></div>
+      <div class="ds-provider"><span class="pe">🍎</span><div><strong>Apple StoreKit (In-App-Käufe)</strong><p>Zahlungsabwicklung über Apple. Wir erhalten keine Zahlungsdaten.</p></div></div>
+    </div>
+    <!-- Werbe-ID -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#fffbeb;">📣</div><h2>Werbe-ID & Tracking</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci info">ℹ</span><span>Google AdMob kann die <strong>Werbe-ID des Geräts</strong> (GAID/IDFA) für personalisierte oder nicht-personalisierte Werbung verwenden.</span></li>
+        <li><span class="ds-ci yes">✓</span><span>Personalisierte Werbung kann in den <strong>Geräteeinstellungen deaktiviert</strong> werden.</span></li>
+      </ul>
+      <div class="ds-box yellow"><strong>Hinweis:</strong> Datenschutzrichtlinie von Google: <a href="https://policies.google.com/privacy" target="_blank" style="color:#92400e;font-weight:700;">policies.google.com/privacy</a></div>
+    </div>
+    <!-- Kein Account -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#f0fdf4;">🚫</div><h2>Keine Registrierung / kein Account</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci no">✗</span><span>Die App erfordert <strong>keinen Account</strong> und keine Registrierung.</span></li>
+        <li><span class="ds-ci no">✗</span><span>Es werden <strong>keine Anmeldedaten</strong> erhoben oder gespeichert.</span></li>
+      </ul>
+      <div class="ds-box green"><strong>Einfach spielen:</strong> Gib einen Spielernamen ein und leg direkt los.</div>
+    </div>
+    <!-- Kinder -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#faf5ff;">👶</div><h2>Kinder (COPPA / DSGVO-K)</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci info">ℹ</span><span>Die App richtet sich an Nutzer <strong>ab 14 Jahren</strong>.</span></li>
+        <li><span class="ds-ci no">✗</span><span>Es werden keine personenbezogenen Daten von Kindern unter 14 Jahren wissentlich erhoben.</span></li>
+      </ul>
+    </div>
+    <!-- Berechtigungen -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#fff7ed;">📱</div><h2>App-Berechtigungen</h2></div>
+      <ul class="ds-check">
+        <li><span class="ds-ci yes">✓</span><span><strong>Internetzugang</strong> — für Online-Spiele, Echtzeit-Synchronisation und Werbung.</span></li>
+        <li><span class="ds-ci no">✗</span><span>Kein Zugriff auf Kamera, Mikrofon, Standort oder Kontakte.</span></li>
+      </ul>
+    </div>
+    <!-- Kontakt -->
+    <div class="ds-card">
+      <div class="ds-head"><div class="ds-icon" style="background:#eff6ff;">✉️</div><h2>Kontakt & Verantwortlicher</h2></div>
+      <p style="font-size:0.9rem;line-height:2;color:#64748b;">
+        <strong style="color:#0f172a;">Faruk Türkaslan</strong><br>
+        c/o Postflex #8786<br>
+        Emsdettener Str. 10<br>
+        48268 Greven<br>
+        <a href="mailto:development.faruk@gmail.com" style="color:#7C3AED;font-weight:700;text-decoration:none;">development.faruk@gmail.com</a>
+      </p>
+    </div>
   </div>
 </div>
-
 <script>
   lucide.createIcons();
-
+  // Navbar scroll glass effect
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) navbar.classList.add('glass','shadow-sm');
     else navbar.classList.remove('glass','shadow-sm');
   });
-
+  // Datenschutz modal
   function openDatenschutz() {
     document.getElementById('ds-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -349,3 +502,4 @@
 </script>
 </body>
 </html>
+ 
