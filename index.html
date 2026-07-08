@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FriendsLoop – 8 Partyspiele in einer App</title>
+<title>FriendsLoop – Partyspiele & Turniere in einer App</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,6 @@
   .game-card { transition:all 0.3s ease; }
   .game-card:hover { transform:translateY(-8px); box-shadow:0 20px 40px -15px rgba(124,58,237,0.3); }
   .blob { position:absolute; filter:blur(80px); opacity:0.4; z-index:0; }
-  .soon-card { background:linear-gradient(135deg,rgba(124,58,237,0.04),rgba(236,72,153,0.04)); border:2px dashed rgba(124,58,237,0.2); border-radius:24px; }
   /* DATENSCHUTZ MODAL */
   #ds-modal { display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto; }
   #ds-modal.open { display:block; }
@@ -99,17 +98,17 @@
       <div class="text-center lg:text-left space-y-8">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-purple-200 shadow-sm animate-pulse-slow">
           <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
-          <span class="text-sm font-semibold text-primary">9 Partyspiele · Kostenlos & kein Account nötig</span>
+          <span class="text-sm font-semibold text-primary">Partyspiele & Turniere · Kein Account nötig</span>
         </div>
         <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
           Schluss mit „Was spielen wir?" — euer <span class="gradient-text">Spieleabend</span> in einer App.
         </h1>
         <p class="text-xl text-slate-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-          9 Partyspiele, ein Raum-Code. Spielt online mit Freunden oder lokal an einem Handy – ganz ohne Account.
+          Partyspiele und Turniere, ein Raum-Code. Spielt online mit Freunden oder lokal an einem Handy – ganz ohne Account.
         </p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start flex-wrap">
           <div class="flex items-center gap-3 text-slate-700 font-medium bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200">
-            <i data-lucide="layout-grid" class="w-5 h-5 text-primary"></i><span>9 Partyspiele</span>
+            <i data-lucide="layout-grid" class="w-5 h-5 text-primary"></i><span>Partyspiele & Turniere</span>
           </div>
           <div class="flex items-center gap-3 text-slate-700 font-medium bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-slate-200">
             <i data-lucide="trophy" class="w-5 h-5 text-secondary"></i><span>Spieleabend-Modus</span>
@@ -222,157 +221,179 @@
   <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle at 1px 1px,rgba(124,58,237,0.2) 1px,transparent 0);background-size:40px 40px;"></div>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-slate-900 mb-4">8 Partyspiele für jede Runde</h2>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto">Von Bluff-Klassikern bis Turniere – Schluss mit „Was spielen wir?", findet das perfekte Spiel.</p>
+      <h2 class="text-4xl font-bold text-slate-900 mb-4">Partyspiele & Turniere</h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto">Von Bluff-Klassikern bis zum Turnierbaum – findet das perfekte Spiel für jede Runde.</p>
     </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Imposter -->
-      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-          <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🕵️</div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-2xl font-bold text-slate-900">Imposter</h3>
-            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">3–12 Spieler</span>
-          </div>
-          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Einer kennt das Wort nicht. Findet den Verräter, bevor er euch austrickst.</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Spielleiter-Modus</span>
-            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Wort erraten</span>
-            <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Bluffen</span>
-          </div>
-        </div>
-      </div>
-      <!-- Bluff-Quiz -->
-      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-          <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🃏</div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-2xl font-bold text-slate-900">Bluff-Quiz</h3>
-            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–7 Spieler</span>
-          </div>
-          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Erfindet überzeugende Lügen und durchschaut die der anderen. Wer blufft am besten?</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Wissensfragen</span>
-            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Erfundene Antworten</span>
-            <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Punkte für Lügen</span>
-          </div>
-        </div>
-      </div>
-      <!-- Zeichne & Rate -->
-      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-          <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">✏️</div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-2xl font-bold text-slate-900">Zeichne & Rate</h3>
-            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
-          </div>
-          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Mal los, wer errät dein Bild zuerst? 90 Sekunden pro Runde — wie gut kannst du Kunst erklären?</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold">Echtzeit-Zeichnung</span>
-            <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold">Alle Geräte sync</span>
-          </div>
-        </div>
-      </div>
-      <!-- Wer bin ich? -->
-      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-          <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🎭</div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-2xl font-bold text-slate-900">Wer bin ich?</h3>
-            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">3–10 Spieler</span>
-          </div>
-          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Errate, welche berühmte Person an dir klebt. Wer kommt mit Ja/Nein-Fragen am schnellsten drauf?</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold">Ja/Nein-Fragen</span>
-            <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold">Viele Charaktere</span>
-          </div>
-        </div>
-      </div>
-      <!-- Buchstabensalat -->
-      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-          <div class="w-14 h-14 bg-cyan-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🧩</div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-2xl font-bold text-slate-900">Buchstabensalat</h3>
-            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
-          </div>
-          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Verwirrte Buchstaben, versteckte Wörter. Wer entwirrt den Salat am schnellsten?</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-cyan-50 text-cyan-600 rounded-full text-xs font-semibold">Wort-Rätsel</span>
-            <span class="px-3 py-1 bg-cyan-50 text-cyan-600 rounded-full text-xs font-semibold">Schnelligkeit</span>
-            <span class="px-3 py-1 bg-cyan-50 text-cyan-600 rounded-full text-xs font-semibold">Vokabular</span>
-          </div>
-        </div>
-      </div>
-      <!-- Innere Uhr -->
-      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-          <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">⏱️</div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-2xl font-bold text-slate-900">Innere Uhr</h3>
-            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–10 Spieler</span>
-          </div>
-          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Wie gut ist dein Zeitgefühl? Schätzt die Sekunden ohne Uhr. Jede Sekunde zählt.</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-semibold">Zeitgefühl</span>
-            <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-semibold">Schätzen</span>
-            <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-semibold">Präzision</span>
-          </div>
-        </div>
-      </div>
-      <!-- Schach-Turniere -->
-      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-slate-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-          <div class="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">♟️</div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-2xl font-bold text-slate-900">Schach-Turniere</h3>
-            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
-          </div>
-          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Tretet im Turnierbaum gegeneinander an. Wer setzt seinen König am geschicktesten matt?</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold">Turnierbaum</span>
-            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold">Strategie</span>
-            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold">Kopf-an-Kopf</span>
-          </div>
-        </div>
-      </div>
-      <!-- Backgammon-Turniere -->
-      <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
-        <div class="relative z-10">
-          <div class="w-14 h-14 bg-rose-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🎲</div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-2xl font-bold text-slate-900">Backgammon-Turniere</h3>
-            <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
-          </div>
-          <p class="text-slate-600 mb-4 text-sm leading-relaxed">Würfelglück und Taktik: Tretet im Turnierbaum an und bringt eure Steine zuerst ins Ziel.</p>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-xs font-semibold">Turnierbaum</span>
-            <span class="px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-xs font-semibold">Glück & Taktik</span>
-            <span class="px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-xs font-semibold">Klassiker</span>
-          </div>
-        </div>
-      </div>
-      <!-- Regelmäßig neue Spiele -->
-      <div class="relative bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl p-6 border-2 border-primary/20 flex flex-col items-center justify-center text-center gap-4 transition-all duration-300 hover:shadow-lg hover:border-primary/40">
-        <div class="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center text-3xl shadow-lg">
-          ✨
-        </div>
+    <!-- PARTYSPIELE -->
+    <div class="mb-16">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-2xl">🎉</span>
         <div>
-          <h3 class="text-xl font-bold text-slate-900 mb-1">Regelmäßig neue Spiele</h3>
-          <p class="text-slate-500 text-sm leading-relaxed max-w-xs mx-auto">Wir erweitern FriendsLoop ständig mit neuen Partyspielen und Inhalten. Bleibt gespannt!</p>
+          <h3 class="text-2xl font-bold text-slate-900">Partyspiele</h3>
+          <p class="text-sm text-slate-500">Bluffen, zeichnen, schätzen — Spaß für jede Runde</p>
         </div>
-        <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">
-          <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
-          Mehr kommt regelmäßig
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Imposter -->
+        <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🕵️</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-slate-900">Imposter</h3>
+              <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">3–12 Spieler</span>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">Einer kennt das Wort nicht. Findet den Verräter, bevor er euch austrickst.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Spielleiter-Modus</span>
+              <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Wort erraten</span>
+              <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-semibold">Bluffen</span>
+            </div>
+          </div>
         </div>
+        <!-- Bluff-Quiz -->
+        <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🃏</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-slate-900">Bluff-Quiz</h3>
+              <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–7 Spieler</span>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">Erfindet überzeugende Lügen und durchschaut die der anderen. Wer blufft am besten?</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Wissensfragen</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Erfundene Antworten</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold">Punkte für Lügen</span>
+            </div>
+          </div>
+        </div>
+        <!-- Zeichne & Rate -->
+        <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">✏️</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-slate-900">Zeichne & Rate</h3>
+              <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">Mal los, wer errät dein Bild zuerst? 90 Sekunden pro Runde — wie gut kannst du Kunst erklären?</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold">Echtzeit-Zeichnung</span>
+              <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold">Alle Geräte sync</span>
+            </div>
+          </div>
+        </div>
+        <!-- Wer bin ich? -->
+        <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🎭</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-slate-900">Wer bin ich?</h3>
+              <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">3–10 Spieler</span>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">Errate, welche berühmte Person an dir klebt. Wer kommt mit Ja/Nein-Fragen am schnellsten drauf?</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold">Ja/Nein-Fragen</span>
+              <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-semibold">Viele Charaktere</span>
+            </div>
+          </div>
+        </div>
+        <!-- Buchstabensalat -->
+        <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-cyan-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🧩</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-slate-900">Buchstabensalat</h3>
+              <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">Verwirrte Buchstaben, versteckte Wörter. Wer entwirrt den Salat am schnellsten?</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-cyan-50 text-cyan-600 rounded-full text-xs font-semibold">Wort-Rätsel</span>
+              <span class="px-3 py-1 bg-cyan-50 text-cyan-600 rounded-full text-xs font-semibold">Schnelligkeit</span>
+              <span class="px-3 py-1 bg-cyan-50 text-cyan-600 rounded-full text-xs font-semibold">Vokabular</span>
+            </div>
+          </div>
+        </div>
+        <!-- Innere Uhr -->
+        <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">⏱️</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-slate-900">Innere Uhr</h3>
+              <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–10 Spieler</span>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">Wie gut ist dein Zeitgefühl? Schätzt die Sekunden ohne Uhr. Jede Sekunde zählt.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-semibold">Zeitgefühl</span>
+              <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-semibold">Schätzen</span>
+              <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-xs font-semibold">Präzision</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- TURNIERE -->
+    <div class="mb-8">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="w-11 h-11 rounded-xl bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center text-2xl">🏆</span>
+        <div>
+          <h3 class="text-2xl font-bold text-slate-900">Turniere</h3>
+          <p class="text-sm text-slate-500">Tretet im Turnierbaum gegeneinander an</p>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl">
+        <!-- Schach-Turniere -->
+        <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-slate-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">♟️</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-slate-900">Schach-Turniere</h3>
+              <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">Tretet im Turnierbaum gegeneinander an. Wer setzt seinen König am geschicktesten matt?</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold">Turnierbaum</span>
+              <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold">Strategie</span>
+              <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-semibold">Kopf-an-Kopf</span>
+            </div>
+          </div>
+        </div>
+        <!-- Backgammon-Turniere -->
+        <div class="game-card bg-white rounded-3xl p-6 border border-slate-200 shadow-lg relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500"></div>
+          <div class="relative z-10">
+            <div class="w-14 h-14 bg-rose-100 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">🎲</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-2xl font-bold text-slate-900">Backgammon-Turniere</h3>
+              <span class="text-xs font-semibold bg-slate-100 text-slate-500 px-2 py-1 rounded-full">2–8 Spieler</span>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">Würfelglück und Taktik: Tretet im Turnierbaum an und bringt eure Steine zuerst ins Ziel.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-xs font-semibold">Turnierbaum</span>
+              <span class="px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-xs font-semibold">Glück & Taktik</span>
+              <span class="px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-xs font-semibold">Klassiker</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Regelmäßig neue Spiele -->
+    <div class="mt-12 relative bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl p-8 border-2 border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-6 transition-all duration-300 hover:shadow-lg hover:border-primary/40">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center text-3xl shadow-lg flex-shrink-0">✨</div>
+        <div>
+          <h3 class="text-xl font-bold text-slate-900 mb-1">Regelmäßig neue Spiele & Inhalte</h3>
+          <p class="text-slate-500 text-sm leading-relaxed">Wir erweitern FriendsLoop ständig mit neuen Partyspielen und Turnieren. Bleibt gespannt!</p>
+        </div>
+      </div>
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-bold whitespace-nowrap">
+        <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+        Mehr kommt regelmäßig
       </div>
     </div>
   </div>
@@ -587,7 +608,7 @@
   <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20"></div>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
     <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Bereit für euren Spieleabend?</h2>
-    <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">9 Partyspiele warten auf euch. Lade die App herunter und startet in weniger als einer Minute. Kein Account, kein Abo.</p>
+    <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">Partyspiele und Turniere warten auf euch. Lade die App herunter und startet in weniger als einer Minute. Kein Account, kein Abo.</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <a href="https://play.google.com/store/apps/details?id=com.farukturkaslan.friendsandplay&pcampaignid=web_share" target="_blank" class="flex items-center justify-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-xl group">
         <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M3.18 23.76c.33.19.7.24 1.07.14L15.34 12 4.25.1C3.88 0 3.51.05 3.18.24 2.5.64 2.5 1.55 2.5 1.55v20.9s0 .91.68 1.31zM16.5 13.17l2.8-2.8-12-6.9-2.58 2.58L16.5 13.17zM19.3 11l2.32 1.33c.66.38.66 1.33 0 1.71L19.3 15.37l-3.08-2.2L19.3 11zM4.72 20.53l11.77-6.74-2.74-1.97L4.72 20.53z"/></svg>
@@ -609,7 +630,7 @@
           <img src="icon.png" alt="FriendsLoop" class="w-9 h-9 rounded-xl object-cover">
           <span class="font-bold text-xl text-white">FriendsLoop</span>
         </div>
-        <p class="text-sm leading-relaxed">Die spaßigste Art, mit Freunden zu spielen. 9 Partyspiele, ein Raum-Code. Kein Account, keine Wartezeit — einfach eintreten und loslegen.</p>
+        <p class="text-sm leading-relaxed">Die spaßigste Art, mit Freunden zu spielen. Partyspiele und Turniere, ein Raum-Code. Kein Account, keine Wartezeit — einfach eintreten und loslegen.</p>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-4">Rechtliches</h4>
@@ -622,7 +643,7 @@
               c/o Postflex #8786<br>
               Emsdettener Str. 10<br>
               48268 Greven<br>
-              <a href="mailto:development.faruk@gmail.com" class="text-purple-400 hover:text-purple-300 transition-colors">development.faruk@gmail.com</a>
+              <a href="mailto:info@friendsloop.app" class="text-purple-400 hover:text-purple-300 transition-colors">info@friendsloop.app</a>
             </div>
           </li>
         </ul>
