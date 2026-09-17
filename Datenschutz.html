@@ -162,8 +162,6 @@
     font-family: 'Fredoka', sans-serif; font-size: 0.85rem; font-weight: 700;
     margin-top: 1px;
   }
-  .data-num.blue { background: linear-gradient(135deg, var(--secondary-start), var(--secondary-end)); }
-  .data-num.green { background: linear-gradient(135deg, var(--success), #43e8a3); }
 
   .data-body strong { display: block; font-weight: 700; font-size: 0.98rem; margin-bottom: 4px; color: #fff; }
   .data-body p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
@@ -277,238 +275,209 @@
 <div class="page-header">
   <div class="page-badge">🔒 Datenschutz</div>
   <h1>Datenschutzerklärung</h1>
-  <p>Zuletzt aktualisiert: Juni 2025 · FriendsLoop App</p>
+  <p>Stand: September 2026 · FriendsLoop App & Web</p>
 </div>
 
 <!-- CONTENT -->
 <div class="content">
 
-  <!-- Erhobene Daten -->
+  <!-- 1. Verantwortlicher -->
   <div class="section-card fade-in">
     <div class="section-card-header">
+      <div class="section-icon ic-blue">✉️</div>
+      <h2>1. Name und Kontaktdaten des Verantwortlichen</h2>
+    </div>
+    <p style="color: var(--muted); font-size: 0.92rem; line-height: 1.8;">
+      Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) sowie sonstiger datenschutzrechtlicher Bestimmungen ist:<br><br>
+      <strong style="color:#fff">Faruk Türkaslan</strong><br>
+      c/o Postflex #8786<br>
+      Emsdettener Str. 10<br>
+      48268 Greven, Deutschland<br>
+      E-Mail: <a href="mailto:development.faruk@gmail.com" style="color: #4D96FF; text-decoration: none; font-weight: 700;">development.faruk@gmail.com</a>
+    </p>
+  </div>
+
+  <!-- 2. Erhobene Daten & Rechtsgrundlagen -->
+  <div class="section-card fade-in d1">
+    <div class="section-card-header">
       <div class="section-icon ic-red">📋</div>
-      <h2>Welche Daten werden erhoben?</h2>
+      <h2>2. Erhebung, Verarbeitung und Rechtsgrundlagen von Daten</h2>
     </div>
 
     <div class="data-item">
       <div class="data-num">1</div>
       <div class="data-body">
-        <strong>Spielername &amp; Avatar</strong>
-        <p>Wird ausschließlich lokal auf deinem Gerät gespeichert (SharedPreferences). Kein Account, keine E-Mail, kein Passwort erforderlich.</p>
+        <strong>Nutzerprofil (Spielername & Avatar)</strong>
+        <p>Zur Identifikation innerhalb der Spielräume wählen Sie einen beliebigen Spielernamen sowie einen Avatar. Diese Daten werden ausschließlich lokal auf Ihrem Endgerät (mittels SharedPreferences / LocalStorage) gespeichert. Die Verarbeitung erfolgt zur Erfüllung des Nutzungsverhältnisses gem. Art. 6 Abs. 1 lit. b DSGVO.</p>
       </div>
     </div>
     <div class="data-item">
       <div class="data-num">2</div>
       <div class="data-body">
-        <strong>Raum-Daten</strong>
-        <p>Raumcode, Spielername, Avatar, Spielstatus sowie Stimmen und Antworten werden temporär in der Firebase Realtime Database gespeichert und nach Spielende automatisch gelöscht.</p>
+        <strong>Multiplayer-Spieldaten & Raum-Daten</strong>
+        <p>Um ein Multiplayer-Spiel bereitzustellen, werden temporär Raumcodes, Spielernamen, Avatare, Spielzustände, Abstimmungsergebnisse sowie Antworten auf den Servern verarbeitet. Die Rechtsgrundlage bildet Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung).</p>
       </div>
     </div>
     <div class="data-item">
       <div class="data-num">3</div>
       <div class="data-body">
-        <strong>Zeichnungsdaten</strong>
-        <p>Beim Spiel „Zeichne &amp; Rate" werden Strichkoordinaten temporär über Firebase übertragen, um die Zeichnung in Echtzeit auf allen Geräten darzustellen.</p>
+        <strong>Zeichnungsdaten („Zeichne & Rate“)</strong>
+        <p>Beim Spielmodus „Zeichne & Rate“ werden Vektor-/Strichkoordinaten temporär verarbeitet, um Zeichnungen in Echtzeit an alle Mitspieler zu übertragen (Art. 6 Abs. 1 lit. b DSGVO).</p>
       </div>
     </div>
     <div class="data-item">
-      <div class="data-num green">✓</div>
+      <div class="data-num">4</div>
       <div class="data-body">
-        <strong>Keine personenbezogenen Daten</strong>
-        <p>Es werden kein echter Name, keine E-Mail-Adresse, keine Telefonnummer und kein Geburtsdatum erhoben oder gespeichert.</p>
+        <strong>Server-Logfiles & Technische Zugriffsdaten</strong>
+        <p>Bei der Nutzung unserer Dienste werden automatisch technische Daten (IP-Adresse, Datum/Uhrzeit des Zugriffs, Gerätetyp, Betriebssystem, App-Version) verarbeitet, um den sicheren Betrieb zu gewährleisten (Art. 6 Abs. 1 lit. f DSGVO).</p>
       </div>
     </div>
   </div>
 
-  <!-- Datenspeicherung -->
-  <div class="section-card fade-in d1">
+  <!-- 3. Speicherdauer -->
+  <div class="section-card fade-in d2">
     <div class="section-card-header">
       <div class="section-icon ic-green">🗄️</div>
-      <h2>Datenspeicherung</h2>
+      <h2>3. Speicherdauer und Löschung</h2>
     </div>
 
     <div class="tag-row" style="margin-top:0; margin-bottom: 18px;">
-      <span class="tag"><span class="dot" style="background:#56C596"></span> Lokal auf dem Gerät</span>
-      <span class="tag"><span class="dot" style="background:#4D96FF"></span> Temporär in Firebase</span>
-      <span class="tag"><span class="dot" style="background:#FF6B6B"></span> Keine dauerhafte Serverspeicherung</span>
+      <span class="tag"><span class="dot" style="background:#56C596"></span> Lokale Speicherung auf dem Gerät</span>
+      <span class="tag"><span class="dot" style="background:#4D96FF"></span> Temporäre Serververarbeitung</span>
+      <span class="tag"><span class="dot" style="background:#FF6B6B"></span> Keine dauerhafte Profilspeicherung</span>
     </div>
 
     <ul class="check-list">
       <li>
         <span class="check-icon yes">✓</span>
-        <span><strong style="color:#fff">Spielername &amp; Avatar</strong> — lokal auf dem Gerät gespeichert, bis die App deinstalliert wird.</span>
+        <span><strong style="color:#fff">Lokale Daten:</strong> Spielername und Avatar verbleiben lokal auf Ihrem Gerät, bis Sie die Anwendungsdaten löschen oder die App deinstallieren.</span>
       </li>
       <li>
         <span class="check-icon yes">✓</span>
-        <span><strong style="color:#fff">Spieldaten</strong> (Räume, Stimmen, Zeichnungen) — temporär in Firebase, werden nach Spielende oder bei Inaktivität automatisch gelöscht.</span>
-      </li>
-      <li>
-        <span class="check-icon no">✗</span>
-        <span>Keine dauerhafte Speicherung von Spieldaten auf Servern.</span>
+        <span><strong style="color:#fff">Temporäre Spieldaten:</strong> Sämtliche Raum- und Spieldaten (Stimmen, Antworten, Zeichnungen) werden nach Beendigung des Spiels bzw. nach Inaktivität automatisch und unwiderruflich gelöscht.</span>
       </li>
     </ul>
   </div>
 
-  <!-- Drittanbieter -->
-  <div class="section-card fade-in d2">
+  <!-- 4. Drittanbieter -->
+  <div class="section-card fade-in d1">
     <div class="section-card-header">
       <div class="section-icon ic-blue">🔌</div>
-      <h2>Drittanbieter-Dienste</h2>
+      <h2>4. Eingebundene Drittanbieter-Dienste</h2>
     </div>
 
     <div class="provider-list">
       <div class="provider-item">
         <span class="provider-emoji">🔥</span>
         <div class="provider-body">
-          <strong>Google Firebase Realtime Database</strong>
-          <p>Speicherung temporärer Spieldaten (Räume, Stimmen, Zeichnungen). Server befinden sich in der EU/USA. Anbieter: Google LLC.</p>
-        </div>
-      </div>
-      <div class="provider-item">
-        <span class="provider-emoji">🛡️</span>
-        <div class="provider-body">
-          <strong>Google Firebase App Check</strong>
-          <p>Schutz der Backend-Dienste vor Missbrauch und unbefugtem Zugriff.</p>
+          <strong>Google Firebase (Realtime Database & App Check)</strong>
+          <p>Wir nutzen Dienste von Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Irland) bzw. Google LLC (USA) zur Echtzeit-Synchronisation sowie zur Absicherung unserer Infrastruktur. Die Verarbeitung erfolgt zur Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) sowie aufgrund unseres berechtigten Interesses an der Missbrauchsverhinderung (Art. 6 Abs. 1 lit. f DSGVO). Etwaige Drittlandtransfers in die USA werden auf die EU-Standardvertragsklauseln bzw. das EU-U.S. Data Privacy Framework gestützt.</p>
         </div>
       </div>
       <div class="provider-item">
         <span class="provider-emoji">📢</span>
         <div class="provider-body">
-          <strong>Google AdMob (Mobile Ads)</strong>
-          <p>Anzeige von Werbung in der App. AdMob kann die Werbe-ID des Geräts (GAID auf Android, IDFA auf iOS) sowie Geräteinformationen zur Ausspielung von Werbung erfassen.</p>
+          <strong>Google AdMob (Werbenetzwerk)</strong>
+          <p>Zur Finanzierung der App nutzen wir Google AdMob. AdMob verarbeitet hierbei Kennungen wie die Werbe-ID (GAID / IDFA), IP-Adressen und Gerätedaten. Soweit eine Einwilligung erforderlich ist (z. B. für personalisierte Werbung), erfolgt die Verarbeitung auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO. Sie können Ihre Einwilligung jederzeit widerrufen.</p>
         </div>
       </div>
       <div class="provider-item">
         <span class="provider-emoji">🛒</span>
         <div class="provider-body">
-          <strong>Google Play Billing (In-App-Käufe)</strong>
-          <p>Abwicklung von In-App-Käufen über Google. Wir erhalten keine Zahlungsdaten — die gesamte Zahlungsabwicklung erfolgt direkt durch Google.</p>
-        </div>
-      </div>
-      <div class="provider-item">
-        <span class="provider-emoji">🍎</span>
-        <div class="provider-body">
-          <strong>Apple StoreKit (In-App-Käufe)</strong>
-          <p>Abwicklung von In-App-Käufen über Apple. Wir erhalten keine Zahlungsdaten — die gesamte Zahlungsabwicklung erfolgt direkt durch Apple.</p>
+          <strong>Google Play Billing & Apple StoreKit (In-App-Käufe)</strong>
+          <p>In-App-Käufe werden direkt über die Plattformbetreiber Google Ireland Limited bzw. Apple Distribution International Ltd. (Hollyhill Industrial Estate, Cork, Irland) abgewickelt. Wir verarbeiten dabei keinerlei Zahlungsdaten (Kreditkarten, Bankverbindungen). Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Werbe-ID / Tracking -->
-  <div class="section-card fade-in d1">
+  <!-- 5. Werbe-ID & Tracking -->
+  <div class="section-card fade-in d2">
     <div class="section-card-header">
       <div class="section-icon ic-yellow">📣</div>
-      <h2>Werbe-ID &amp; Tracking</h2>
+      <h2>5. Werbe-ID, Tracking und Widerruf</h2>
     </div>
+
+    <p style="color: var(--muted); font-size: 0.88rem; margin-bottom: 14px; line-height: 1.6;">
+      Bei Nutzung werbefinanzierter Funktionen kann Google AdMob gerätespezifische Werbe-IDs verarbeiten. Sie haben das Recht, personalisierte Werbung jederzeit zu deaktivieren oder die Werbe-ID Ihres Geräts zurückzusetzen:
+    </p>
 
     <ul class="check-list">
       <li>
-        <span class="check-icon yes">ℹ</span>
-        <span>Google AdMob kann die <strong style="color:#fff">Werbe-ID des Geräts</strong> (GAID / IDFA) verwenden, um personalisierte oder nicht-personalisierte Werbung anzuzeigen.</span>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Android:</strong> Einstellungen &rarr; Google &rarr; Werbung &rarr; Werbe-ID zurücksetzen oder löschen.</span>
       </li>
       <li>
         <span class="check-icon yes">✓</span>
-        <span>Nutzer können <strong style="color:#fff">personalisierte Werbung deaktivieren</strong> — unter Android in den Google-Einstellungen, unter iOS über die App-Tracking-Transparenz.</span>
+        <span><strong style="color:#fff">iOS:</strong> Einstellungen &rarr; Datenschutz &amp; Sicherheit &rarr; Tracking (App-Tracking-Transparenz).</span>
       </li>
     </ul>
 
     <div class="warning-box">
-      <strong>Hinweis:</strong> Die Datenschutzerklärung von Google AdMob findest du unter <a href="https://policies.google.com/privacy" target="_blank" style="color: var(--yellow); text-decoration: none;">policies.google.com/privacy</a>.
+      <strong>Weitere Informationen:</strong> Ausführliche Hinweise zur Datenverarbeitung durch Google finden Sie unter <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--yellow); text-decoration: underline;">policies.google.com/privacy</a>.
     </div>
   </div>
 
-  <!-- Kein Account -->
-  <div class="section-card fade-in d2">
-    <div class="section-card-header">
-      <div class="section-icon ic-green">🚫</div>
-      <h2>Keine Registrierung / kein Account</h2>
-    </div>
-
-    <ul class="check-list">
-      <li>
-        <span class="check-icon no">✗</span>
-        <span>Die App erfordert <strong style="color:#fff">keinen Account</strong> und keine Registrierung.</span>
-      </li>
-      <li>
-        <span class="check-icon no">✗</span>
-        <span>Es werden <strong style="color:#fff">keine Anmeldedaten</strong> (Benutzername, E-Mail, Passwort) erhoben oder gespeichert.</span>
-      </li>
-    </ul>
-
-    <div class="highlight-box">
-      <strong>Einfach spielen:</strong> Gib einen Spielernamen ein und leg direkt los — mehr braucht es nicht.
-    </div>
-  </div>
-
-  <!-- Kinder -->
+  <!-- 6. Jugendschutz -->
   <div class="section-card fade-in d1">
     <div class="section-card-header">
       <div class="section-icon ic-purple">👶</div>
-      <h2>Kinder (COPPA / DSGVO-K)</h2>
+      <h2>6. Kinder und Jugendschutz</h2>
     </div>
 
     <ul class="check-list">
       <li>
         <span class="check-icon yes">ℹ</span>
-        <span>Die App richtet sich an Nutzer <strong style="color:#fff">ab 14 Jahren</strong>.</span>
+        <span>Unsere Dienste richten sich grundsätzlich an Personen ab <strong style="color:#fff">16 Jahren</strong> (bzw. ab 14 Jahren gemäß den jeweiligen regionalen Altersgrenzen für Online-Dienste).</span>
       </li>
       <li>
         <span class="check-icon no">✗</span>
-        <span>Es werden <strong style="color:#fff">keine personenbezogenen Daten von Kindern</strong> unter 14 Jahren wissentlich erhoben.</span>
-      </li>
-      <li>
-        <span class="check-icon no">✗</span>
-        <span>Sollten uns Hinweise darauf vorliegen, dass Kinder unter 14 Jahren die App nutzen, werden entsprechende Daten umgehend gelöscht.</span>
+        <span>Wir erheben nicht wissentlich personenbezogene Daten von Kindern unterhalb der gesetzlichen Altersgrenze ohne die Einwilligung der Erziehungsberechtigten. Sollten uns entsprechende Daten übermittelt werden, werden diese umgehend gelöscht.</span>
       </li>
     </ul>
   </div>
 
-  <!-- Berechtigungen -->
+  <!-- 7. Rechte der betroffenen Personen -->
   <div class="section-card fade-in d2">
     <div class="section-card-header">
-      <div class="section-icon ic-orange">📱</div>
-      <h2>App-Berechtigungen</h2>
+      <div class="section-icon ic-green">⚖️</div>
+      <h2>7. Ihre Rechte als betroffene Person</h2>
     </div>
+
+    <p style="color: var(--muted); font-size: 0.88rem; line-height: 1.7; margin-bottom: 14px;">
+      Ihnen stehen nach der DSGVO folgende Rechte bezüglich Ihrer personenbezogenen Daten zu:
+    </p>
 
     <ul class="check-list">
       <li>
         <span class="check-icon yes">✓</span>
-        <span><strong style="color:#fff">Internetzugang</strong> — erforderlich für Online-Spiele, Echtzeit-Synchronisation und Werbung.</span>
+        <span><strong style="color:#fff">Auskunftsrecht (Art. 15 DSGVO):</strong> Das Recht, Auskunft über Ihre verarbeiteten Daten zu verlangen.</span>
       </li>
       <li>
-        <span class="check-icon no">✗</span>
-        <span>Kein Zugriff auf <strong style="color:#fff">Kamera</strong>.</span>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Berichtigung & Löschung (Art. 16, 17 DSGVO):</strong> Das Recht auf Berichtigung unrichtiger oder Löschung Ihrer Daten.</span>
       </li>
       <li>
-        <span class="check-icon no">✗</span>
-        <span>Kein Zugriff auf <strong style="color:#fff">Mikrofon</strong>.</span>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Einschränkung der Verarbeitung (Art. 18 DSGVO):</strong> Das Recht, die Verarbeitung Ihrer Daten einzuschränken.</span>
       </li>
       <li>
-        <span class="check-icon no">✗</span>
-        <span>Kein Zugriff auf <strong style="color:#fff">Standort</strong>.</span>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Datenübertragbarkeit (Art. 20 DSGVO):</strong> Das Recht, bereitgestellte Daten in einem strukturierten Format zu erhalten.</span>
       </li>
       <li>
-        <span class="check-icon no">✗</span>
-        <span>Kein Zugriff auf <strong style="color:#fff">Kontakte</strong>.</span>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Widerspruchsrecht (Art. 21 DSGVO):</strong> Das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit der Verarbeitung zu widersprechen.</span>
+      </li>
+      <li>
+        <span class="check-icon yes">✓</span>
+        <span><strong style="color:#fff">Beschwerderecht bei einer Aufsichtsbehörde (Art. 77 DSGVO):</strong> Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren.</span>
       </li>
     </ul>
-  </div>
 
-  <!-- Kontakt -->
-  <div class="section-card fade-in d1">
-    <div class="section-card-header">
-      <div class="section-icon ic-blue">✉️</div>
-      <h2>Kontakt &amp; Verantwortlicher</h2>
+    <div class="highlight-box">
+      <strong>Geltendmachung:</strong> Zur Ausübung Ihrer Rechte genügt eine formlose E-Mail an <a href="mailto:development.faruk@gmail.com" style="color: var(--success); text-decoration: underline;">development.faruk@gmail.com</a>.
     </div>
-    <p style="color: var(--muted); font-size: 0.92rem; line-height: 1.9;">
-      Verantwortlich im Sinne der DSGVO:<br>
-      <strong style="color:#fff">Faruk Türkaslan</strong><br>
-      c/o Postflex #8786<br>
-      Emsdettener Str. 10<br>
-      48268 Greven<br><br>
-      <a href="mailto:development.faruk@gmail.com" style="color: #4D96FF; text-decoration: none; font-weight: 700;">development.faruk@gmail.com</a>
-    </p>
   </div>
 
 </div>
@@ -520,7 +489,7 @@
     <a href="friendsloop.html">Startseite</a>
     <a href="datenschutz.html">Datenschutz</a>
   </div>
-  <p class="footer-copy">FriendsLoop — Made with <span class="footer-heart">❤️</span> · © 2025 FriendsLoop. Alle Rechte vorbehalten.</p>
+  <p class="footer-copy">FriendsLoop — Made with <span class="footer-heart">❤️</span> · © 2026 FriendsLoop. Alle Rechte vorbehalten.</p>
 </footer>
 
 <script>
