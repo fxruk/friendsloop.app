@@ -1,0 +1,20 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "74QM86B9B3.app.friendsloop"
+        ],
+        "components": [
+          {
+            "/": "/join/*",
+            "comment": "Einladungen (QR auf dem Spieleabend-Ticket)"
+          },
+          {
+            "/": "/join"
+          }
+        ]
+      }
+    ]
+  }
+}

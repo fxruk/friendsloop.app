@@ -1,0 +1,16 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.farukturkaslan.friendsandplay",
+      "sha256_cert_fingerprints": [
+        "D4:08:EA:32:5F:4E:50:5E:D8:4D:F2:DB:2C:2C:9E:BF:49:5F:38:FE:67:0E:1B:D1:8D:F9:E2:77:2B:44:74:7B",
+        "34:97:9E:46:68:D1:32:16:D3:CF:71:B2:3A:41:B1:0B:70:63:13:3B:5E:01:3E:A5:25:A9:37:84:E1:C3:C7:96",
+        "46:53:66:5F:9F:9F:8D:6D:24:26:66:EA:96:68:0B:A5:2F:2A:56:2B:92:8F:E3:3D:B0:C1:AD:07:38:51:AF:47"
+      ]
+    }
+  }
+]
