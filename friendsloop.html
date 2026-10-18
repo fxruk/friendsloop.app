@@ -3,6 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Vom Handy/Tablet direkt in den passenden Store (2026-10-18). Desktop und
+  // Suchmaschinen sehen weiter die Webseite. Mit ?web bleibt man hier
+  // (z. B. als Support-Adresse im App Store, damit App-Prüfer die Seite sehen).
+  (function () {
+    var ua = navigator.userAgent || '';
+    if (/[?&]web\b/.test(location.search)) return;
+    if (/bot|crawl|spider|slurp|lighthouse|preview/i.test(ua)) return;
+    var ios = /iPhone|iPad|iPod/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (ios) {
+      location.replace('https://apps.apple.com/app/id6761231896');
+    } else if (/Android/i.test(ua)) {
+      location.replace('https://play.google.com/store/apps/details?id=com.farukturkaslan.friendsandplay');
+    }
+  })();
+</script>
 <title>FriendsLoop – Euer Spieleabend in einer App</title>
 <meta name="description" content="Partyspiele, Duelle und Turniere mit Freunden. Wählt eure Spiele, teilt einen Raum-Code und kürt euren Gesamtsieger – ohne Account, online oder je nach Spiel lokal.">
 <script src="https://cdn.tailwindcss.com"></script>
